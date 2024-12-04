@@ -1,22 +1,35 @@
+// superficie.h (header)
 #ifndef SUPERFICIE_H
 #define SUPERFICIE_H
 
-#include "vertice.h"
-#include "linea.h"
 #include <vector>
-using namespace std;
+#include <cmath>
+#include <GL/gl.h>
+#include "vertice.h"
+#include "matriz3d.h"
 
-class Superficie
-{
+class Superficie {
+
 public:
-    float r,v,a;
-    vector<Vertice*> vertices;
-    Superficie(float,float,float);
+    // Constructor con opacidad por defecto
+    Superficie(float r, float v, float a, float opacidad = 1.0f);
+    std::vector<Vertice*> vertices;
+    float r, v, a, opacidad;
+
+    // Destructor
     ~Superficie();
-    void agregar(Vertice*);
+
+    // Agregar un vértice
+    void agregar(Vertice* vertice);
+
+    // Crear una copia de la superficie
     Superficie* copia();
+
+    // Desplegar la superficie
     void desplegar();
-    void transformar(Matriz3D*);
+
+    // Transformar la superficie
+    void transformar(Matriz3D* M);
 };
 
 #endif // SUPERFICIE_H

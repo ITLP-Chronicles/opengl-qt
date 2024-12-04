@@ -74,6 +74,28 @@ void Objeto3D::rotar(float teta,Linea* eje) {
     delete M;
 }
 
+Vertice* Objeto3D::calcularCentroide() const {
+    float sumX = 0.0f;
+    float sumY = 0.0f;
+    float sumZ = 0.0f;
+    int numVertices = 0;
+
+    for (const Superficie* superficie : superficies) {
+        for (const Vertice* vertice : superficie->vertices) { // Asegúrate de tener un método getVertices() en Surface
+            sumX += vertice->x;  // Usa el método correspondiente de Vertex para obtener x, y, z
+            sumY += vertice->y;
+            sumZ += vertice->z;
+            numVertices++;
+        }
+    }
+
+    if (numVertices == 0) {
+        return new Vertice(0.0f, 0.0f, 0.0f);  // En caso de que no haya vértices
+    }
+
+    return new Vertice(sumX / numVertices, sumY / numVertices, sumZ / numVertices);
+}
+
 
 
 

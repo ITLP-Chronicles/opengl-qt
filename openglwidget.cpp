@@ -3,27 +3,108 @@
 #include <cmath>
 
 OpenGLWidget::OpenGLWidget() {
+    /// Values Default
     // Initial camera parameters
     cameraDistance = 3.5f;
     cameraYaw = 0.0f;
     cameraPitch = 15.0f;
-
     // Camera position and movement
     cameraX = 0.0f;
     cameraY = 0.0f;
     cameraZ = 0.0f;
-
     setMouseTracking(true);
-
     // Initialize 3D object
     objeto3D = new Objeto3D();
-    Vertice o = Vertice(-0.2, -0.2, -0.2);
-    CrearPrismaRectangular(objeto3D, o.x, o.y, o.z, 0.5, 0.5, 1); // Body
-
     // Track mouse movement states
     lastMousePos = QPoint(0, 0);
     isLeftButtonPressed = false;
     isRightButtonPressed = false;
+    ///
+
+    Vertice o = Vertice(-0.2, -0.2, -0.2);
+    CrearPrismaRectangular(objeto3D, o.x, o.y, o.z, 0.5, 0.5, 1, 221, 129, 52); // Body
+
+    // Crear el cuerpo principal
+    CrearPrismaRectangular(objeto3D, o.x, o.y, o.z, 0.5, 0.5, 1, 221, 129, 52); // Body
+
+    // Dimensiones de las patas
+    float anchoPata = 0.15;  // Ancho de la pata
+    float altoPata = 0.3;   // Altura de la pata
+    float profundidadPata = 0.15;  // Profundidad de la pata
+
+    // Dimensiones de las pezuñas
+    float anchoPatita = 0.15;
+    float altoPatita = 0.05;
+    float profundidadPatita = 0.15;
+
+    // Color de las patas (marrón oscuro)
+    int colorPataR = 101;
+    int colorPataG = 67;
+    int colorPataB = 33;
+
+    // Pata 1 - Esquina inferior izquierda delantera
+    CrearPrismaRectangular(objeto3D,
+                           o.x,
+                           o.y - altoPata,
+                           o.z - 1 + profundidadPata,
+                           anchoPata, altoPata, profundidadPata,
+                           colorPataR, colorPataG, colorPataB);
+    CrearPrismaRectangular(objeto3D,
+                            o.x,
+                            o.y - altoPata - altoPatita,
+                            o.z - 1 + profundidadPata,
+                            anchoPatita, altoPatita, profundidadPatita,
+                            31,32,38);
+
+    // Pata 2 - Esquina inferior derecha delantera
+    CrearPrismaRectangular(objeto3D,
+                           o.x + 0.5 - anchoPata,
+                           o.y - altoPata,
+                           o.z - 1 + profundidadPata,
+                           anchoPata, altoPata, profundidadPata,
+                           colorPataR, colorPataG, colorPataB);
+    CrearPrismaRectangular(objeto3D,
+                           o.x + 0.5 - anchoPata ,
+                           o.y - altoPata - altoPatita,
+                           o.z - 1 + profundidadPata,
+                            anchoPatita, altoPatita, profundidadPatita,
+                            31,32,38);
+
+
+    // Pata 3 - Esquina inferior izquierda trasera
+    CrearPrismaRectangular(objeto3D,
+                           o.x,
+                           o.y - altoPata,
+                           o.z ,
+                           anchoPata, altoPata, profundidadPata,
+                           colorPataR, colorPataG, colorPataB);
+    CrearPrismaRectangular(objeto3D,
+                           o.x,
+                           o.y - altoPata - altoPatita,
+                           o.z ,
+                           anchoPatita, altoPatita, profundidadPatita,
+                           31,32,38);
+
+    // Pata 4 - Esquina inferior derecha trasera
+    CrearPrismaRectangular(objeto3D,
+                           o.x + 0.5 - anchoPata,
+                           o.y - altoPata,
+                           o.z,
+                           anchoPata, altoPata, profundidadPata,
+                           colorPataR, colorPataG, colorPataB);
+    CrearPrismaRectangular(objeto3D,
+                           o.x + 0.5 - anchoPata,
+                           o.y - altoPata - altoPatita,
+                           o.z,
+                           anchoPatita, altoPatita, profundidadPatita,
+                           31,32,38);
+
+    //Eje Z
+    CrearPrismaRectangular(objeto3D, 0,0,0  ,  0.015, 0.015,3,  0,0,0,  0.1);
+    CrearPrismaRectangular(objeto3D, 0,0,0  ,  0.015, 0.015,-3, 0,0,0, 0.1);
+    //Eje y
+    CrearPrismaRectangular(objeto3D, 0,0,0  ,  0.015, 3, 0.015,  0,0,0, 0.1);
+    CrearPrismaRectangular(objeto3D, 0,0,0  ,  0.015, -3, 0.015, 0,0,0, 0.1);
 }
 
 void OpenGLWidget::initializeGL() {
@@ -123,6 +204,9 @@ void OpenGLWidget::wheelEvent(QWheelEvent *event) {
 
 void OpenGLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

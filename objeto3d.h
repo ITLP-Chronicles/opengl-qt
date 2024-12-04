@@ -2,11 +2,12 @@
 #define OBJETO3D_H
 
 #include "superficie.h"
+#include "linea.h"
 
 class Objeto3D
 {
 public:
-    vector<Superficie*> superficies;
+    std::vector<Superficie*> superficies;
     Objeto3D();
     ~Objeto3D();
     void agregar(Superficie*);
@@ -14,6 +15,7 @@ public:
     Objeto3D *copia();
     void rotar(float,Linea*);
     void transformar(Matriz3D*);
+    Vertice* calcularCentroide() const;
 };
 
 #endif // OBJETO3D_H
