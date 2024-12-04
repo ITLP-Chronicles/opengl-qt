@@ -56,20 +56,30 @@ void OpenGLWidget::paintGL() {
     float luzAmbiente[] = {0.2, 0.2, 0.2, 1};
     float luzDifusa[] = {1.0, 1.0, 1.0, 1};
     float luzPosicion[] = {mouseX, mouseY, 0, 1};
+    float luz_aten[] = {0.5};
+
 
     glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
     glLightfv(GL_LIGHT0, GL_POSITION, luzPosicion);
+    glLightfv(GL_LIGHT0, GL_LINEAR_ATTENUATION, luz_aten);
 
     glNormal3f(0, 0, 1);
     glColor3f(1, 0, 0);
 
-    glLoadIdentity();
-
-    glTranslatef(0.25, 0.25, -0.25);
+    glTranslatef(0.25, 0.25, -2.5);
+    glRotatef(90, 1.0, 0, 0);
     glRotatef(10, 1.0, 0, 0);
-    glRotatef(angulo, 0, 1.0, 0);
+    glRotatef(angulo, 0, 1.0, 0.2);
     glTranslatef(-0.25, -0.25, 0.25);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glFrustum(-1.0, 1.0, -1.0, 1.0, 2.0, 10.0);
+    glMatrixMode(GL_MODELVIEW);
+
+    QSize tam = size();
+    glViewport(tam.width()/2,tam.height()/2,tam.width()/2,tam.height()/2);
 
     glBegin(GL_QUADS);
 
