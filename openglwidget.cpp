@@ -19,6 +19,8 @@ OpenGLWidget::OpenGLWidget() {
     lastMousePos = QPoint(0, 0);
     isLeftButtonPressed = false;
     isRightButtonPressed = false;
+    lightX = 0.0f;
+    lightY = 0.0f;
     ///
 
     Vertice o = Vertice(-0.2, -0.2, -0.2);
@@ -222,7 +224,7 @@ void OpenGLWidget::paintGL() {
     // Configure lighting
     float luzAmbiente[] = {0.2, 0.2, 0.2, 1};
     float luzDifusa[] = {1.0, 1.0, 1.0, 1};
-    float luzPosicion[] = {0, 0, 2.0f, 1};
+    float luzPosicion[] = {lightX, lightY, 2.0f, 1};;
 
     glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
