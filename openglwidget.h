@@ -4,6 +4,7 @@
 #include <QOpenGLWidget>
 #include <QBasicTimer>
 #include <QMouseEvent>
+#include "objeto3d.h"
 
 class OpenGLWidget : public QOpenGLWidget
 {
@@ -11,17 +12,17 @@ public:
     OpenGLWidget();
 private:
     int angulo;
-    int sentido;
-
-    float mouseX;
-    float mouseY;
     QBasicTimer timer;
+    int sentido;
+    float focoX;
+    float focoY;
+    Objeto3D* objeto3D;
     void initializeGL();
     void paintGL();
-    void timerEvent(QTimerEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
+    void timerEvent(QTimerEvent *);
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
 };
 
 #endif // OPENGLWIDGET_H

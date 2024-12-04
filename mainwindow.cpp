@@ -12,8 +12,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->LayoutOpenGL->addWidget(openGLWidget);
 }
 
-
-
 MainWindow::~MainWindow()
 {
     delete ui;

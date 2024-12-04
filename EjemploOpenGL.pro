@@ -11,13 +11,23 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    linea.cpp \
     main.cpp \
     mainwindow.cpp \
-    openglwidget.cpp
+    matriz3d.cpp \
+    objeto3d.cpp \
+    openglwidget.cpp \
+    superficie.cpp \
+    vertice.cpp
 
 HEADERS += \
+    linea.h \
     mainwindow.h \
-    openglwidget.h
+    matriz3d.h \
+    objeto3d.h \
+    openglwidget.h \
+    superficie.h \
+    vertice.h
 
 FORMS += \
     mainwindow.ui

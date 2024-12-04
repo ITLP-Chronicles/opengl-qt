@@ -18,7 +18,6 @@ public:
     ~MainWindow();
 
 private:
-    float angulo;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H
