@@ -18,6 +18,7 @@ SOURCES += \
     objeto3d.cpp \
     openglwidget.cpp \
     superficie.cpp \
+    utils.cpp \
     vertice.cpp
 
 HEADERS += \

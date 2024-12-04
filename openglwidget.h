@@ -11,6 +11,12 @@ class OpenGLWidget : public QOpenGLWidget
 public:
     OpenGLWidget();
 private:
+    float cameraDistance;
+    float cameraYaw;
+    float cameraPitch;
+    QPoint lastMousePos;
+    bool isLeftButtonPressed;
+
     int angulo;
     QBasicTimer timer;
     int sentido;
@@ -20,9 +26,9 @@ private:
     void initializeGL();
     void paintGL();
     void mouseMoveEvent(QMouseEvent *);
-    void timerEvent(QTimerEvent *);
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
+    void wheelEvent(QWheelEvent *);
 };
 
 #endif // OPENGLWIDGET_H
