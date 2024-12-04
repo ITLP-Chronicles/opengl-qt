@@ -18,6 +18,9 @@ private:
     bool isLeftButtonPressed;
     bool isRightButtonPressed;
     float cameraX, cameraY, cameraZ;
+    float lightX = 0.0f;
+    float lightY = 0.0f;
+    float lightZ = 2.0f;
 
     int angulo;
     QBasicTimer timer;

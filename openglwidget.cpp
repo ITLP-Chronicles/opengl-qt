@@ -144,6 +144,10 @@ void OpenGLWidget::mouseReleaseEvent(QMouseEvent *event) {
 void OpenGLWidget::mouseMoveEvent(QMouseEvent *event) {
     QPoint delta = event->pos() - lastMousePos;
 
+    // Movimiento de la luz basado en el movimiento del mouse
+    lightX += delta.x() * 0.01f;  // Ajusta estos valores para controlar la sensibilidad
+    lightY -= delta.y() * 0.01f;  // Resta para que el movimiento sea más intuitivo
+
     if (isLeftButtonPressed) {
         // Camera rotation
         cameraYaw += delta.x() * 0.5f;     // Horizontal rotation
