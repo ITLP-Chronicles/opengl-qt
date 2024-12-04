@@ -16,6 +16,8 @@ private:
     float cameraPitch;
     QPoint lastMousePos;
     bool isLeftButtonPressed;
+    bool isRightButtonPressed;
+    float cameraX, cameraY, cameraZ;
 
     int angulo;
     QBasicTimer timer;

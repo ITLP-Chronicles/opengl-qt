@@ -1,11 +1,17 @@
 #include "openglwidget.h"
 #include "utils.cpp"
+#include <cmath>
 
 OpenGLWidget::OpenGLWidget() {
     // Initial camera parameters
     cameraDistance = 3.5f;
     cameraYaw = 0.0f;
     cameraPitch = 15.0f;
+
+    // Camera position and movement
+    cameraX = 0.0f;
+    cameraY = 0.0f;
+    cameraZ = 0.0f;
 
     setMouseTracking(true);
 
@@ -17,6 +23,7 @@ OpenGLWidget::OpenGLWidget() {
     // Track mouse movement states
     lastMousePos = QPoint(0, 0);
     isLeftButtonPressed = false;
+    isRightButtonPressed = false;
 }
 
 void OpenGLWidget::initializeGL() {
@@ -34,35 +41,79 @@ void OpenGLWidget::mousePressEvent(QMouseEvent *event) {
         isLeftButtonPressed = true;
         setCursor(Qt::BlankCursor); // Hide cursor when rotating
     }
+
+    if (event->button() == Qt::RightButton) {
+        isRightButtonPressed = true;
+        setCursor(Qt::BlankCursor); // Hide cursor when panning
+    }
 }
 
 void OpenGLWidget::mouseReleaseEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         isLeftButtonPressed = false;
-        unsetCursor(); // Restore default cursor
+        unsetCursor();
+    }
+
+    if (event->button() == Qt::RightButton) {
+        isRightButtonPressed = false;
+        unsetCursor();
     }
 }
 
 void OpenGLWidget::mouseMoveEvent(QMouseEvent *event) {
-    if (isLeftButtonPressed) {
-        // Calculate mouse movement delta
-        QPoint delta = event->pos() - lastMousePos;
+    QPoint delta = event->pos() - lastMousePos;
 
-        // Adjust camera rotation based on mouse movement
+    if (isLeftButtonPressed) {
+        // Camera rotation
         cameraYaw += delta.x() * 0.5f;     // Horizontal rotation
         cameraPitch += delta.y() * 0.5f;   // Vertical rotation
 
         // Limit pitch to prevent camera flipping
         cameraPitch = qBound(-89.0f, cameraPitch, 89.0f);
-
-        lastMousePos = event->pos();
-        update();
     }
+
+    if (isRightButtonPressed) {
+        // Improved camera panning
+        float moveSpeed = 0.02f;
+
+        // Convert current rotation to radians
+        float yawRad = qDegreesToRadians(cameraYaw);
+        float pitchRad = qDegreesToRadians(cameraPitch);
+
+        // Calculate right vector
+        float rightX = std::cos(yawRad);
+        float rightZ = std::sin(yawRad);
+        float rightY = 0;
+
+        // Calculate up vector (always world up)
+        float upX = 0;
+        float upY = 1;
+        float upZ = 0;
+
+        // Calculate forward vector
+        float forwardX = std::sin(yawRad) * std::cos(pitchRad);
+        float forwardY = -std::sin(pitchRad);
+        float forwardZ = -std::cos(yawRad) * std::cos(pitchRad);
+
+        // Pan horizontally (screen right/left)
+        cameraX += delta.x() * moveSpeed * rightX;
+        cameraY += delta.x() * moveSpeed * rightY;
+        cameraZ += delta.x() * moveSpeed * rightZ;
+
+        // Pan vertically (screen up/down)
+        cameraX += delta.y() * moveSpeed * upX;
+        cameraY += delta.y() * moveSpeed * upY;
+        cameraZ += delta.y() * moveSpeed * upZ;
+    }
+
+    lastMousePos = event->pos();
+    update();
 }
 
 void OpenGLWidget::wheelEvent(QWheelEvent *event) {
     // Zoom in/out using mouse wheel
-    cameraDistance -= event->angleDelta().y() * 0.01f;
+    float zoomSpeed = 0.01f;
+    cameraDistance -= event->angleDelta().y() * zoomSpeed;
 
     // Limit zoom range
     cameraDistance = qBound(1.0f, cameraDistance, 10.0f);
@@ -80,7 +131,7 @@ void OpenGLWidget::paintGL() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // Configure lighting with dynamic coordinates
+    // Configure lighting
     float luzAmbiente[] = {0.2, 0.2, 0.2, 1};
     float luzDifusa[] = {1.0, 1.0, 1.0, 1};
     float luzPosicion[] = {0, 0, 2.0f, 1};
@@ -90,6 +141,7 @@ void OpenGLWidget::paintGL() {
     glLightfv(GL_LIGHT0, GL_POSITION, luzPosicion);
 
     // Apply camera transformations
+    glTranslatef(-cameraX, -cameraY, -cameraZ);
     glTranslatef(0, 0, -cameraDistance);
     glRotatef(cameraPitch, 1, 0, 0);   // Pitch rotation
     glRotatef(cameraYaw, 0, 1, 0);     // Yaw rotation
