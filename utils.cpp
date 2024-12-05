@@ -160,3 +160,4 @@ void CrearPrismaRectangular(Objeto3D* objeto, float x, float y, float z, float a
     izquierda->agregar(new Vertice(x1, y2, z2));
     objeto->agregar(izquierda);
 }
+

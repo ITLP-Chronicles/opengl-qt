@@ -1,5 +1,5 @@
 #include "openglwidget.h"
-#include "utils.cpp"
+#include "utils.h"
 #include <cmath>
 
 OpenGLWidget::OpenGLWidget() {
@@ -124,24 +124,13 @@ void OpenGLWidget::mousePressEvent(QMouseEvent *event) {
         isLeftButtonPressed = true;
         setCursor(Qt::BlankCursor); // Hide cursor when rotating
     }
-
-    if (event->button() == Qt::RightButton) {
-        isRightButtonPressed = true;
-        setCursor(Qt::BlankCursor); // Hide cursor when panning
-    }
 }
 
 void OpenGLWidget::mouseReleaseEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         isLeftButtonPressed = false;
         unsetCursor();
-    }
-
-    if (event->button() == Qt::RightButton) {
-        isRightButtonPressed = false;
-        unsetCursor();
-    }
-}
+    }}
 
 void OpenGLWidget::mouseMoveEvent(QMouseEvent *event) {
     QPoint delta = event->pos() - lastMousePos;
@@ -159,40 +148,6 @@ void OpenGLWidget::mouseMoveEvent(QMouseEvent *event) {
         cameraPitch = qBound(-89.0f, cameraPitch, 89.0f);
     }
 
-    if (isRightButtonPressed) {
-        // Improved camera panning
-        float moveSpeed = 0.02f;
-
-        // Convert current rotation to radians
-        float yawRad = qDegreesToRadians(cameraYaw);
-        float pitchRad = qDegreesToRadians(cameraPitch);
-
-        // Calculate right vector
-        float rightX = std::cos(yawRad);
-        float rightZ = std::sin(yawRad);
-        float rightY = 0;
-
-        // Calculate up vector (always world up)
-        float upX = 0;
-        float upY = 1;
-        float upZ = 0;
-
-        // Calculate forward vector
-        float forwardX = std::sin(yawRad) * std::cos(pitchRad);
-        float forwardY = -std::sin(pitchRad);
-        float forwardZ = -std::cos(yawRad) * std::cos(pitchRad);
-
-        // Pan horizontally (screen right/left)
-        cameraX += delta.x() * moveSpeed * rightX;
-        cameraY += delta.x() * moveSpeed * rightY;
-        cameraZ += delta.x() * moveSpeed * rightZ;
-
-        // Pan vertically (screen up/down)
-        cameraX += delta.y() * moveSpeed * upX;
-        cameraY += delta.y() * moveSpeed * upY;
-        cameraZ += delta.y() * moveSpeed * upZ;
-    }
-
     lastMousePos = event->pos();
     update();
 }
@@ -203,7 +158,7 @@ void OpenGLWidget::wheelEvent(QWheelEvent *event) {
     cameraDistance -= event->angleDelta().y() * zoomSpeed;
 
     // Limit zoom range
-    cameraDistance = qBound(1.0f, cameraDistance, 10.0f);
+    cameraDistance = qBound(1.0f, cameraDistance, 20.0f);
 
     update();
 }

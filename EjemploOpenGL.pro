@@ -28,6 +28,7 @@ HEADERS += \
     objeto3d.h \
     openglwidget.h \
     superficie.h \
+    utils.h \
     vertice.h
 
 FORMS += \
