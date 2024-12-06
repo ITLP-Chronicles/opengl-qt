@@ -1,7 +1,8 @@
 #ifndef FOXLEG_H
 #define FOXLEG_H
+#include "objeto3d.h"
 
-class foxleg
+class foxleg : public Objeto3D
 {
 public:
     foxleg();

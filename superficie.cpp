@@ -8,6 +8,7 @@ Superficie::Superficie(float r, float v, float a, float opacidad) {
     this->opacidad = opacidad;
 }
 
+
 Superficie::~Superficie() {
     for (Vertice* vertice : vertices) {
         delete vertice;

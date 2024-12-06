@@ -1,7 +1,9 @@
 #ifndef FOXHEAD_H
 #define FOXHEAD_H
 
-class foxhead
+#include "objeto3d.h"
+
+class foxhead : public Objeto3D
 {
 public:
     foxhead();
