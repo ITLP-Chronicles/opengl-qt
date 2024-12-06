@@ -1,8 +1,9 @@
 #include "fox.h"
 #include "matriz3d.h"
 
-fox::fox(foxhead* head, foxleg* frontRight, foxleg* frontLeft, foxleg* backRight, foxleg* backLeft, foxtail* tail) {
+fox::fox(foxhead* head, foxbody* body, foxleg* frontRight, foxleg* frontLeft, foxleg* backRight, foxleg* backLeft, foxtail* tail) {
     this->head = head;
+    this->body = body;
     this->frontRight = frontRight;
     this->frontLeft = frontLeft;
     this->backRight = backRight;
@@ -12,6 +13,7 @@ fox::fox(foxhead* head, foxleg* frontRight, foxleg* frontLeft, foxleg* backRight
 
 void fox::display(){
     this->head->desplegar();
+    this->body->desplegar();
     this->frontRight->desplegar();
     this->frontLeft->desplegar();
     this->backRight->desplegar();

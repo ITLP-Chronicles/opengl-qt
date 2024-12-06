@@ -6,7 +6,7 @@
 class foxhead : public Objeto3D
 {
 public:
-    foxhead();
+    foxhead(Vertice* o);
 };
 
 #endif // FOXHEAD_H

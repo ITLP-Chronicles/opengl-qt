@@ -5,7 +5,23 @@
 class foxleg : public Objeto3D
 {
 public:
-    foxleg();
+
+    // Dimensiones de las patas
+    float anchoPata = 0.15;  // Ancho de la pata
+    float altoPata = 0.3;   // Altura de la pata
+    float profundidadPata = 0.15;  // Profundidad de la
+
+    // Color de las patas (marrón oscuro)
+    int colorPataR = 101;
+    int colorPataG = 67;
+    int colorPataB = 33;
+
+    // Dimensiones de las pezuñas
+    float anchoPatita = 0.15;
+    float altoPatita = 0.05;
+    float profundidadPatita = 0.15;
+
+    foxleg(Vertice* o);
 };
 
 #endif // FOXLEG_H

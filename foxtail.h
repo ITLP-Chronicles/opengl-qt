@@ -5,7 +5,7 @@
 class foxtail : public Objeto3D
 {
 public:
-    foxtail();
+    foxtail(Vertice* o);
 };
 
 #endif // FOXTAIL_H

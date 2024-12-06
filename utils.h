@@ -22,5 +22,6 @@ void CrearPrismaRectangular(Objeto3D* objeto,
                             float colorDerecha[3],
                             float colorIzquierda[3],
                             float opacidad = 1.0f);
+void Graficar(Objeto3D* objeto3D);
 
 #endif // UTILS_H

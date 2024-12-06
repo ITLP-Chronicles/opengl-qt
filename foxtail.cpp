@@ -1,3 +1,6 @@
 #include "foxtail.h"
+#include "utils.h"
 
-foxtail::foxtail() {}
+foxtail::foxtail(Vertice* o) {
+
+}

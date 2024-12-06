@@ -1,5 +1,6 @@
 #include <superficie.h>
 #include <objeto3d.h>
+#include "openglwidget.h"
 
 void CrearPrismaRectangular(Objeto3D* objeto, float x, float y, float z, float ancho, float alto, float profundo,
                             float colorR = 1.0f, float colorG = 0.0f, float colorB = 0.0f, float opacidad = 1.0f) {
@@ -161,3 +162,129 @@ void CrearPrismaRectangular(Objeto3D* objeto, float x, float y, float z, float a
     objeto->agregar(izquierda);
 }
 
+void Graficar(Objeto3D* objeto3D){
+    Vertice* o = new Vertice(-0.25, -0.25, 0.5);
+
+    // Crear el cuerpo principal
+    CrearPrismaRectangular(objeto3D, o->x, o->y, o->z, 0.5, 0.5, 1, 221, 129, 52); // Body
+
+    // Dimensiones de las patas
+    float anchoPata = 0.15;  // Ancho de la pata
+    float altoPata = 0.3;   // Altura de la pata
+    float profundidadPata = 0.15;  // Profundidad de la pata
+
+    // Dimensiones de las pezuñas
+    float anchoPatita = 0.15;
+    float altoPatita = 0.05;
+    float profundidadPatita = 0.15;
+
+    // Color de las patas (marrón oscuro)
+    int colorPataR = 101;
+    int colorPataG = 67;
+    int colorPataB = 33;
+
+    // Pata 1 - Esquina inferior izquierda delantera
+    CrearPrismaRectangular(objeto3D,
+                           o->x,
+                           o->y - altoPata,
+                           o->z - 1 + profundidadPata,
+                           anchoPata, altoPata, profundidadPata,
+                           colorPataR, colorPataG, colorPataB);
+    CrearPrismaRectangular(objeto3D,
+                           o->x,
+                           o->y - altoPata - altoPatita,
+                           o->z - 1 + profundidadPata,
+                           anchoPatita, altoPatita, profundidadPatita,
+                           31,32,38);
+
+    // Pata 2 - Esquina inferior derecha delantera
+    CrearPrismaRectangular(objeto3D,
+                           o->x + 0.5 - anchoPata,
+                           o->y - altoPata,
+                           o->z - 1 + profundidadPata,
+                           anchoPata, altoPata, profundidadPata,
+                           colorPataR, colorPataG, colorPataB);
+    CrearPrismaRectangular(objeto3D,
+                           o->x + 0.5 - anchoPata ,
+                           o->y - altoPata - altoPatita,
+                           o->z - 1 + profundidadPata,
+                           anchoPatita, altoPatita, profundidadPatita,
+                           31,32,38);
+
+
+    // Pata 3 - Esquina inferior izquierda trasera
+    CrearPrismaRectangular(objeto3D,
+                           o->x,
+                           o->y - altoPata,
+                           o->z ,
+                           anchoPata, altoPata, profundidadPata,
+                           colorPataR, colorPataG, colorPataB);
+    CrearPrismaRectangular(objeto3D,
+                           o->x,
+                           o->y - altoPata - altoPatita,
+                           o->z ,
+                           anchoPatita, altoPatita, profundidadPatita,
+                           31,32,38);
+
+    // Pata 4 - Esquina inferior derecha trasera
+    CrearPrismaRectangular(objeto3D,
+                           o->x + 0.5 - anchoPata,
+                           o->y - altoPata,
+                           o->z,
+                           anchoPata, altoPata, profundidadPata,
+                           colorPataR, colorPataG, colorPataB);
+    CrearPrismaRectangular(objeto3D,
+                           o->x + 0.5 - anchoPata,
+                           o->y - altoPata - altoPatita,
+                           o->z,
+                           anchoPatita, altoPatita, profundidadPatita,
+                           31,32,38);
+
+    // Dimensiones de la cabeza
+    float anchoCabeza = 0.6;  // Ancho de la cabeza
+    float altoCabeza = 0.5;   // Altura de la cabeza
+    float profundidadCabeza = -0.45;  // Profundidad de la cabeza
+
+    CrearPrismaRectangular(objeto3D, o->x-0.05, o->y-0.07, o->z, anchoCabeza, altoCabeza, profundidadCabeza, 221, 129, 52); // Head
+    // Dimensiones de las orejas
+    float anchoOreja = 0.1;  // Ancho de la oreja
+    float altoOreja = 0.18;   // Altura de la oreja
+    float profundidadOreja = 0.1;  // Profundidad de la oreja
+
+    // Oreja 1 - Derecha
+    CrearPrismaRectangular(objeto3D,
+                           o->x + anchoOreja/2,
+                           o->y + altoCabeza - 0.07,
+                           o->z - profundidadCabeza - profundidadOreja,
+                           anchoOreja, altoOreja, profundidadOreja,
+                           0, 0, 0);
+    CrearPrismaRectangular(objeto3D,
+                           o->x + anchoOreja/2 + 0.02,
+                           o->y + altoCabeza - 0.07,
+                           o->z - profundidadCabeza - profundidadOreja,
+                           anchoOreja - 0.04, altoOreja - 0.02, -0.007,
+                           230, 230, 230);
+
+    // Oreja 2 - Izquierda
+    CrearPrismaRectangular(objeto3D,
+                           o->x + anchoCabeza - anchoOreja * 5/2,
+                           o->y + altoCabeza - 0.07,
+                           o->z - profundidadCabeza - profundidadOreja,
+                           anchoOreja, altoOreja, profundidadOreja,
+                           0, 0, 0);
+    CrearPrismaRectangular(objeto3D,
+                           o->x + anchoCabeza - anchoOreja * 5/2 + 0.02,
+                           o->y + altoCabeza - 0.07,
+                           o->z - profundidadCabeza - profundidadOreja,
+                           anchoOreja - 0.04, altoOreja - 0.02, -0.007,
+                           230, 230, 230);
+
+
+
+    //Eje Z
+    CrearPrismaRectangular(objeto3D, 0,0,0  ,  0.015, 0.015,3,  0,0,0,  0.1);
+    CrearPrismaRectangular(objeto3D, 0,0,0  ,  0.015, 0.015,-3, 0,0,0, 0.1);
+    //Eje y
+    CrearPrismaRectangular(objeto3D, 0,0,0  ,  0.015, 3, 0.015,  0,0,0, 0.1);
+    CrearPrismaRectangular(objeto3D, 0,0,0  ,  0.015, -3, 0.015, 0,0,0, 0.1);
+}

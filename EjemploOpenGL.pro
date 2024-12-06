@@ -12,6 +12,7 @@ CONFIG += c++17
 
 SOURCES += \
     fox.cpp \
+    foxbody.cpp \
     foxhead.cpp \
     foxleg.cpp \
     foxtail.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 
 HEADERS += \
     fox.h \
+    foxbody.h \
     foxhead.h \
     foxleg.h \
     foxtail.h \
