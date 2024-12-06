@@ -1,7 +1,7 @@
 #include "foxleg.h"
 #include "utils.h"
 
-foxleg::foxleg(Vertice* o, float offsetX, float offsetZ) {
+foxleg::foxleg(Vertice* o, float offsetX, float offsetZ, Linea* rotationAxe) {
     // Crear la parte principal de la pata
     CrearPrismaRectangular(this,
                            o->x + offsetX,

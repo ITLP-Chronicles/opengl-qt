@@ -2,6 +2,8 @@
 #include <cmath>
 
 Objeto3D::Objeto3D() {
+    this->superficies = nullptr;
+    this->rotationAxe = nullptr;
 }
 
 Objeto3D::~Objeto3D() {

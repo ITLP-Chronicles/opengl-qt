@@ -3,11 +3,13 @@
 
 #include "superficie.h"
 #include "linea.h"
+#include "linea.h"
 
 class Objeto3D
 {
 public:
     std::vector<Superficie*> superficies;
+    Linea* rotationAxe;
     Objeto3D();
     ~Objeto3D();
     void agregar(Superficie*);

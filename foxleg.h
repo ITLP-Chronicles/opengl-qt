@@ -21,7 +21,7 @@ public:
     float altoPatita = 0.05;
     float profundidadPatita = 0.15;
 
-    foxleg(Vertice* o, float offsetX, float offsetZ);
+    foxleg(Vertice* o, float offsetX, float offsetZ, Linea* rotationAxe);
 };
 
 #endif // FOXLEG_H
