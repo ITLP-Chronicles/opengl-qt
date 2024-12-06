@@ -24,20 +24,20 @@ OpenGLWidget::OpenGLWidget() {
     lightX = 0.0f;
     lightY = 0.0f;
     ///
+
     //Graficar(objeto3D);
     Vertice* o = new Vertice(-0.25f, -0.25f, 0.5f);
     foxhead* head = new foxhead(o);
     foxbody* body = new foxbody(o);
 
-    // Dimensiones de las patas
-    float anchoPata = 0.15;  // Ancho de la pata
-    float altoPata = 0.3;   // Altura de la pata
-    float profundidadPata = 0.15;  // Profundidad de la pata
+    float anchoPata = 0.15;
+    float profundidadPata = 0.15;
 
-    foxleg* frontRight = new foxleg(o);
-    foxleg* frontLeft = new foxleg(new Vertice(o->x,o->y - altoPata,o->z - 1 + profundidadPata));
-    foxleg* backRight = new foxleg(o);
-    foxleg* backLeft = new foxleg(o);
+    foxleg* frontLeft = new foxleg(o, 0, -1 + profundidadPata);
+    foxleg* frontRight = new foxleg(o, 0.5 - anchoPata, -1 + profundidadPata);
+    foxleg* backLeft = new foxleg(o, 0, 0);
+    foxleg* backRight = new foxleg(o, 0.5 - anchoPata, 0);
+
     foxtail* tail = new foxtail(o);
     foxxy = new fox(head, body, frontRight, frontLeft, backRight, backLeft, tail);
     foxxy->display();

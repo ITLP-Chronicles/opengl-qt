@@ -1,63 +1,20 @@
 #include "foxleg.h"
 #include "utils.h"
 
-foxleg::foxleg(Vertice* o) {
+foxleg::foxleg(Vertice* o, float offsetX, float offsetZ) {
+    // Crear la parte principal de la pata
+    CrearPrismaRectangular(this,
+                           o->x + offsetX,
+                           o->y - this->altoPata,
+                           o->z + offsetZ,
+                           this->anchoPata, this->altoPata, this->profundidadPata,
+                           this->colorPataR, this->colorPataG, this->colorPataB);
 
-    // Pata 1 - Esquina inferior izquierda delantera
+    // Crear la parte inferior (patita)
     CrearPrismaRectangular(this,
-                           o->x,
-                           o->y - altoPata,
-                           o->z - 1 + profundidadPata,
-                           anchoPata, altoPata, profundidadPata,
-                           colorPataR, colorPataG, colorPataB);
-    CrearPrismaRectangular(this,
-                           o->x,
-                           o->y - altoPata - altoPatita,
-                           o->z - 1 + profundidadPata,
-                           anchoPatita, altoPatita, profundidadPatita,
-                           31,32,38);
-    /*
-    // Pata 2 - Esquina inferior derecha delantera
-    CrearPrismaRectangular(this,
-                           o->x + 0.5 - anchoPata,
-                           o->y - altoPata,
-                           o->z - 1 + profundidadPata,
-                           anchoPata, altoPata, profundidadPata,
-                           colorPataR, colorPataG, colorPataB);
-    CrearPrismaRectangular(this,
-                           o->x + 0.5 - anchoPata ,
-                           o->y - altoPata - altoPatita,
-                           o->z - 1 + profundidadPata,
-                           anchoPatita, altoPatita, profundidadPatita,
-                           31,32,38);
-
-
-    // Pata 3 - Esquina inferior izquierda trasera
-    CrearPrismaRectangular(this,
-                           o->x,
-                           o->y - altoPata,
-                           o->z ,
-                           anchoPata, altoPata, profundidadPata,
-                           colorPataR, colorPataG, colorPataB);
-    CrearPrismaRectangular(this,
-                           o->x,
-                           o->y - altoPata - altoPatita,
-                           o->z ,
-                           anchoPatita, altoPatita, profundidadPatita,
-                           31,32,38);
-
-    // Pata 4 - Esquina inferior derecha trasera
-    CrearPrismaRectangular(this,
-                           o->x + 0.5 - anchoPata,
-                           o->y - altoPata,
-                           o->z,
-                           anchoPata, altoPata, profundidadPata,
-                           colorPataR, colorPataG, colorPataB);
-    CrearPrismaRectangular(this,
-                           o->x + 0.5 - anchoPata,
-                           o->y - altoPata - altoPatita,
-                           o->z,
-                           anchoPatita, altoPatita, profundidadPatita,
-                           31,32,38);
-*/
+                           o->x + offsetX,
+                           o->y - this->altoPata - this->altoPatita,
+                           o->z + offsetZ,
+                           this->anchoPatita, this->altoPatita, this->profundidadPatita,
+                           31, 32, 38);
 }
