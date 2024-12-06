@@ -25,7 +25,6 @@ OpenGLWidget::OpenGLWidget() {
     lightY = 0.0f;
     ///
 
-    //Graficar(objeto3D);
     Vertice* o = new Vertice(-0.25f, -0.25f, 0.5f);
     foxhead* head = new foxhead(o);
     foxbody* body = new foxbody(o);
@@ -40,6 +39,7 @@ OpenGLWidget::OpenGLWidget() {
 
     foxtail* tail = new foxtail(o);
     foxxy = new fox(head, body, frontRight, frontLeft, backRight, backLeft, tail);
+    foxxy->moveLeg(FoxLeg::FrontLeft,M_PI/10);
     foxxy->display();
 }
 
