@@ -66,11 +66,25 @@ void fox::display() {
 
 void fox::moveHead(double angle) {
     if (head) {
-        // Rotate head up or down around X-axis
-        glPushMatrix();
-        glRotatef(angle, 1.0f, 0.0f, 0.0f);
-        head->rotar(angle, head->rotationAxe);  // Assuming rotar method in Objeto3D
-        glPopMatrix();
+        // Convert angle to radians
+        float angleInRadians = angle * M_PI / 180.0f;
+        
+        // Create rotation matrix for X-axis rotation (nodding motion)
+        Matriz3D* rotationMatrix = new Matriz3D();
+        float cosA = cos(angleInRadians);
+        float sinA = sin(angleInRadians);
+        
+        // Set up rotation matrix for X-axis
+        rotationMatrix->datos[1][1] = cosA;
+        rotationMatrix->datos[1][2] = -sinA;
+        rotationMatrix->datos[2][1] = sinA;
+        rotationMatrix->datos[2][2] = cosA;
+        
+        // Apply rotation
+        head->transformar(rotationMatrix);
+        
+        // Don't forget to clean up
+        delete rotationMatrix;
     }
 }
 

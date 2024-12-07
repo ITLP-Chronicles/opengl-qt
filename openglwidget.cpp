@@ -231,22 +231,16 @@ void OpenGLWidget::keyReleaseEvent(QKeyEvent *event) {
 }
 
 void OpenGLWidget::moveHeadTimer() {
-    static float headAngle = 0.0f;
-    static float headDirection = 1.0f;
+    static float time = 0.0f;
     
-    // Smooth pendulum movement using smaller angle increments
-    headAngle += headDirection * 0.5f;
+    // Increment time for smooth animation
+    time += 0.3f;  // Smaller time increment for smoother movement
     
-    // Limit head rotation to a smaller range (±10 degrees)
-    if (headAngle >= 10.0f || headAngle <= -10.0f) {
-        headDirection *= -1.0f;
-    }
+    // Reduced maximum angle from 2.0f to 0.8f for an even more subtle movement
+    float headAngle = 1.0f * sin(time);
     
-    // Move the head up and down
     if (foxxy) {
         foxxy->moveHead(headAngle);
-        qDebug() << "Moviendo!!";
-
     }
     
     update();
