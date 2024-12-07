@@ -69,7 +69,7 @@ void fox::moveHead(double angle) {
         // Rotate head up or down around X-axis
         glPushMatrix();
         glRotatef(angle, 1.0f, 0.0f, 0.0f);
-        head->rotar(angle, nullptr);  // Assuming rotar method in Objeto3D
+        head->rotar(angle, head->rotationAxe);  // Assuming rotar method in Objeto3D
         glPopMatrix();
     }
 }
@@ -103,30 +103,44 @@ void fox::moveTail(double angle) {
 }
 
 void fox::rotateItself(AxeDirection direction, double angle) {
-    glPushMatrix();
-    Linea* eje = new Linea(0,-0.25,0,0,-0.25,1);
-
-    // Rotate the entire fox based on the specified axis
+    // Convert angle to radians
+    float angleInRadians = angle * M_PI / 180.0f;
+    
+    // Create rotation matrix based on direction
+    Matriz3D* rotationMatrix = new Matriz3D();
+    float cosA = cos(angleInRadians);
+    float sinA = sin(angleInRadians);
+    
     switch(direction) {
     case X:
-        glRotatef(angle, 1.0f, 0.0f, 0.0f);
+        rotationMatrix->datos[1][1] = cosA;
+        rotationMatrix->datos[1][2] = -sinA;
+        rotationMatrix->datos[2][1] = sinA;
+        rotationMatrix->datos[2][2] = cosA;
         break;
     case Y:
         glRotatef(angle, 0.0f, 1.0f, 0.0f);
         break;
     case Z:
-        glRotatef(angle, 0.0f, 0.0f, 1.0f);
+        rotationMatrix->datos[0][0] = cosA;
+        rotationMatrix->datos[0][1] = -sinA;
+        rotationMatrix->datos[1][0] = sinA;
+        rotationMatrix->datos[1][1] = cosA;
         break;
     }
-
-    // Apply rotation to each body part
-    if (head) head->rotar(angle, eje);
-    if (body) body->rotar(angle, eje);
-    if (frontRight) frontRight->rotar(angle, eje);
-    if (frontLeft) frontLeft->rotar(angle, eje);
-    if (backRight) backRight->rotar(angle, eje);
-    if (backLeft) backLeft->rotar(angle, eje);
-    if (tail) tail->rotar(angle, eje);
-
-    glPopMatrix();
+    
+    // Apply rotation to each part
+    if (body) body->transformar(rotationMatrix);
+    if (head) head->transformar(rotationMatrix);
+    if (frontRight) frontRight->transformar(rotationMatrix);
+    if (frontLeft) frontLeft->transformar(rotationMatrix);
+    if (backRight) backRight->transformar(rotationMatrix);
+    if (backLeft) backLeft->transformar(rotationMatrix);
+    if (tail) tail->transformar(rotationMatrix);
+    
+    // Clean up
+    delete rotationMatrix;
+    
+    // Display the transformed fox
+    display();
 }

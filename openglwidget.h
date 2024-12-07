@@ -26,20 +26,26 @@ private:
 
     int angulo;
     QBasicTimer timer;
+    QTimer* timerHead;
+    QTimer* timerTail;
+    QTimer* timerFoxRotation;
     int sentido;
     float focoX;
     float focoY;
-    Objeto3D* objeto3D;
-    void initializeGL();
-    void paintGL();
-    void mouseMoveEvent(QMouseEvent *);
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void wheelEvent(QWheelEvent *);
+    Objeto3D *objeto3D;
+    void initializeGL() override;
+    void paintGL() override;
+    void mouseMoveEvent(QMouseEvent *) override;
+    void mousePressEvent(QMouseEvent *) override;
+    void mouseReleaseEvent(QMouseEvent *) override;
+    void wheelEvent(QWheelEvent *) override;
 protected:
     void timerEvent(QTimerEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
+private slots:
+    void moveHeadTimer();
+    void moveFoxRotationTimer();
 };
 
 #endif // OPENGLWIDGET_H

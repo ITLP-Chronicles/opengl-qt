@@ -4,6 +4,13 @@
 #include "vertice.h"
 #include <cmath>
 fox* foxxy = nullptr;
+
+
+
+void moveTailTimer(){
+    qDebug() << "moveTailTimer";
+}
+
 OpenGLWidget::OpenGLWidget() {
     setFocusPolicy(Qt::StrongFocus);  // Allow widget to receive keyboard focus
     setFocus();                        // Set initial focus to this widget
@@ -26,6 +33,12 @@ OpenGLWidget::OpenGLWidget() {
     isRightButtonPressed = false;
     lightX = 0.0f;
     lightY = 0.0f;
+    this->timerTail = new QTimer(this);
+    this->timerHead = new QTimer(this);
+    this->timerFoxRotation = new QTimer(this);
+    connect(timerTail, &QTimer::timeout, this, moveTailTimer);
+    connect(timerHead, &QTimer::timeout, this, &OpenGLWidget::moveHeadTimer);
+    connect(timerFoxRotation, &QTimer::timeout, this, &OpenGLWidget::moveFoxRotationTimer);
     ///
 
     Vertice* o = new Vertice(-0.25f, -0.25f, 0.5f);
@@ -155,6 +168,9 @@ void OpenGLWidget::paintGL() {
     // Render object
     glColor3f(1, 0, 0);
     foxxy->display();
+    // if (foxxy) {
+    //     foxxy->rotateItself(X, rotationAngle);  // This will handle the display
+    // }
 }
 
 void OpenGLWidget::keyPressEvent(QKeyEvent *event) {
@@ -163,6 +179,16 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_A) {
         timer.start(30, this);
     }
+    if (event->key() == Qt::Key_S) {
+        timerHead->start(30);
+    }
+    if (event->key() == Qt::Key_D) {
+        timerTail->start(30);
+    }
+    if (event->key() == Qt::Key_F) {
+        timerFoxRotation->start(30);
+    }
+
     QWidget::keyPressEvent(event);
 }
 
@@ -191,5 +217,47 @@ void OpenGLWidget::keyReleaseEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_A) {
         timer.stop();
     }
+    if (event->key() == Qt::Key_S) {
+        timerHead->stop();
+    }
+    if (event->key() == Qt::Key_D) {
+        timerTail->stop();
+    }
+    if (event->key() == Qt::Key_F) {
+        timerFoxRotation->stop();
+    }
     QWidget::keyReleaseEvent(event);
+}
+
+void OpenGLWidget::moveHeadTimer() {
+    static float headAngle = 0.0f;
+    static float headDirection = 1.0f;
+    
+    // Smooth pendulum movement using smaller angle increments
+    headAngle += headDirection * 0.5f;
+    
+    // Limit head rotation to a smaller range (±10 degrees)
+    if (headAngle >= 10.0f || headAngle <= -10.0f) {
+        headDirection *= -1.0f;
+    }
+    
+    // Move the head up and down
+    if (foxxy) {
+        foxxy->moveHead(headAngle);
+        qDebug() << "Moviendo!!";
+
+    }
+    
+    update();
+}
+
+void OpenGLWidget::moveFoxRotationTimer() {
+    // Usar un ángulo fijo por frame en lugar de acumulativo
+    float rotationSpeed = 2.0f;  // grados por frame
+    
+    if (foxxy) {
+        foxxy->rotateItself(X, rotationSpeed);
+    }
+    
+    update();
 }
