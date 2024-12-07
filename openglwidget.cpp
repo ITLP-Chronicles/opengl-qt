@@ -192,6 +192,7 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event) {
     QWidget::keyPressEvent(event);
 }
 
+/// MOVER PATAS
 void OpenGLWidget::timerEvent(QTimerEvent *event) {
     static float angle = 0.0f;
     static float direction = 1.0f;
