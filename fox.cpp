@@ -75,7 +75,6 @@ void fox::moveHead(double angle) {
 }
 
 void fox::moveLeg(FoxLeg leg, double angle) {
-    // Select the correct leg based on enum
     foxleg* selectedLeg = nullptr;
     switch(leg) {
     case FrontRight: selectedLeg = frontRight; break;
@@ -85,11 +84,11 @@ void fox::moveLeg(FoxLeg leg, double angle) {
     }
 
     if (selectedLeg) {
-        double angleInRadians = angle * M_PI / 180.0;  // Convert degrees to radians
-        glPushMatrix();
-        glRotatef(angle, 1.0f, 0.0f, 0.0f);  // glRotatef uses degrees
-        selectedLeg->rotar(angleInRadians, selectedLeg->rotationAxe);  // rotar uses radians
-        glPopMatrix();
+        // Convertir a radianes y aplicar la rotación
+        double angleInRadians = angle * M_PI / 180.0;
+        
+        // Aplicar la rotación usando el eje horizontal para movimiento de péndulo
+        selectedLeg->rotar(angleInRadians, selectedLeg->rotationAxe);
     }
 }
 

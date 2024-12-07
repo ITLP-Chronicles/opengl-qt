@@ -33,10 +33,22 @@ OpenGLWidget::OpenGLWidget() {
     // Crear las líneas para los ejes de rotación
     Linea* ejeCabeza = new Linea(o, new Vertice(o->x, o->y + 0.5f, o->z)); // Eje de rotación para la cabeza
     Linea* ejeCuerpo = new Linea(o, new Vertice(o->x, o->y + 1.0f, o->z));  // Eje de rotación para el cuerpo
-    Linea* ejePataFrontLeft = new Linea(o, new Vertice(o->x, o->y - 1 + 0.15f, o->z + 0.5f)); // Ahora se extiende en Z
-    Linea* ejePataFrontRight = new Linea(o, new Vertice(o->x + 0.5f - 0.15f, o->y - 1 + 0.15f, o->z + 0.5f));
-    Linea* ejePataBackLeft = new Linea(o, new Vertice(o->x, o->y, o->z + 0.5f));
-    Linea* ejePataBackRight = new Linea(o, new Vertice(o->x + 0.5f - 0.15f, o->y, o->z + 0.5f));
+    Linea* ejePataFrontLeft = new Linea(
+        new Vertice(o->x - 0.1f, o->y, o->z - 1.0f),          // Punto izquierdo
+        new Vertice(o->x + 0.1f, o->y, o->z - 1.0f)           // Punto derecho
+    );
+    Linea* ejePataFrontRight = new Linea(
+        new Vertice(o->x + 0.5f - 0.25f, o->y, o->z - 1.0f),  // Punto izquierdo
+        new Vertice(o->x + 0.5f + 0.05f, o->y, o->z - 1.0f)   // Punto derecho
+    );
+    Linea* ejePataBackLeft = new Linea(
+        new Vertice(o->x - 0.1f, o->y, o->z),                 // Punto izquierdo
+        new Vertice(o->x + 0.1f, o->y, o->z)                  // Punto derecho
+    );
+    Linea* ejePataBackRight = new Linea(
+        new Vertice(o->x + 0.5f - 0.25f, o->y, o->z),         // Punto izquierdo
+        new Vertice(o->x + 0.5f + 0.05f, o->y, o->z)          // Punto derecho
+    );
     Linea* ejeCola = new Linea(o, new Vertice(o->x, o->y + 1.0f, o->z)); // Eje de rotación para la cola
 
     // Crear las partes del zorro pasando las líneas como último parámetro
@@ -52,8 +64,6 @@ OpenGLWidget::OpenGLWidget() {
 
     // Crear el zorro
     foxxy = new fox(head, body, frontRight, frontLeft, backRight, backLeft, tail);
-
-    foxxy->moveLeg(FoxLeg::FrontLeft, 20);
     // Realizar una rotación y mostrar
     foxxy->display();
 }
@@ -148,21 +158,32 @@ void OpenGLWidget::paintGL() {
 }
 
 void OpenGLWidget::keyPressEvent(QKeyEvent *event) {
-    qDebug() << "Key Press Event Received! Key:" << event->key();
     qDebug() << "Widget has focus:" << this->hasFocus();
     
     if (event->key() == Qt::Key_A) {
-        qDebug() << "A key pressed!";
         timer.start(30, this);
     }
     QWidget::keyPressEvent(event);
 }
 
 void OpenGLWidget::timerEvent(QTimerEvent *event) {
-    foxxy->moveLeg(FoxLeg::FrontLeft, 1);
-    foxxy->moveLeg(FoxLeg::FrontRight, 1);
-    foxxy->moveLeg(FoxLeg::BackLeft, 1);
-    foxxy->moveLeg(FoxLeg::BackRight, 1);
+    static float angle = 0.0f;
+    static float direction = 1.0f;
+    
+    // Movimiento pendular suave usando seno
+    angle += direction * 1.0f;  // Reducido de 2.0f a 1.0f para un movimiento más suave
+    
+    // Limitar el ángulo a un rango más pequeño (±15 grados en lugar de ±30)
+    if (angle >= 6.0f || angle <= -6.0f) {
+        direction *= -1.0f;
+    }
+    
+    // Mover las patas opuestas en fase contraria
+    foxxy->moveLeg(FoxLeg::FrontLeft, angle);
+    foxxy->moveLeg(FoxLeg::BackRight, angle);
+    foxxy->moveLeg(FoxLeg::FrontRight, -angle);
+    foxxy->moveLeg(FoxLeg::BackLeft, -angle);
+    
     update();
 }
 
