@@ -88,7 +88,7 @@ void fox::moveLeg(FoxLeg leg, double angle) {
         // Rotate leg forward or backward around X-axis
         glPushMatrix();
         glRotatef(angle, 1.0f, 0.0f, 0.0f);
-        selectedLeg->rotar(angle, nullptr);  // Assuming rotar method in Objeto3D
+        selectedLeg->rotar(angle, selectedLeg->rotationAxe);  // Assuming rotar method in Objeto3D
         glPopMatrix();
     }
 }
@@ -98,13 +98,14 @@ void fox::moveTail(double angle) {
         // Rotate tail sideways around Y-axis
         glPushMatrix();
         glRotatef(angle, 0.0f, 1.0f, 0.0f);
-        tail->rotar(angle, nullptr);  // Assuming rotar method in Objeto3D
+        tail->rotar(angle, tail->rotationAxe);  // Assuming rotar method in Objeto3D
         glPopMatrix();
     }
 }
 
 void fox::rotateItself(AxeDirection direction, double angle) {
     glPushMatrix();
+    Linea* eje = new Linea(0,-0.25,0,0,-0.25,1);
 
     // Rotate the entire fox based on the specified axis
     switch(direction) {
@@ -120,13 +121,13 @@ void fox::rotateItself(AxeDirection direction, double angle) {
     }
 
     // Apply rotation to each body part
-    if (head) head->rotar(angle, nullptr);
-    if (body) body->rotar(angle, nullptr);
-    if (frontRight) frontRight->rotar(angle, nullptr);
-    if (frontLeft) frontLeft->rotar(angle, nullptr);
-    if (backRight) backRight->rotar(angle, nullptr);
-    if (backLeft) backLeft->rotar(angle, nullptr);
-    if (tail) tail->rotar(angle, nullptr);
+    if (head) head->rotar(angle, eje);
+    if (body) body->rotar(angle, eje);
+    if (frontRight) frontRight->rotar(angle, eje);
+    if (frontLeft) frontLeft->rotar(angle, eje);
+    if (backRight) backRight->rotar(angle, eje);
+    if (backLeft) backLeft->rotar(angle, eje);
+    if (tail) tail->rotar(angle, eje);
 
     glPopMatrix();
 }

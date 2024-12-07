@@ -26,20 +26,32 @@ OpenGLWidget::OpenGLWidget() {
     ///
 
     Vertice* o = new Vertice(-0.25f, -0.25f, 0.5f);
-    foxhead* head = new foxhead(o);
-    foxbody* body = new foxbody(o);
 
-    float anchoPata = 0.15;
-    float profundidadPata = 0.15;
+    // Crear las líneas para los ejes de rotación
+    Linea* ejeCabeza = new Linea(o, new Vertice(o->x, o->y + 0.5f, o->z)); // Eje de rotación para la cabeza
+    Linea* ejeCuerpo = new Linea(o, new Vertice(o->x, o->y + 1.0f, o->z));  // Eje de rotación para el cuerpo
+    Linea* ejePataFrontLeft = new Linea(o, new Vertice(o->x, o->y - 1 + 0.15f, o->z)); // Eje de rotación para pata delantera izquierda
+    Linea* ejePataFrontRight = new Linea(o, new Vertice(o->x + 0.5 - 0.15, o->y - 1 + 0.15f, o->z)); // Eje de rotación para pata delantera derecha
+    Linea* ejePataBackLeft = new Linea(o, new Vertice(o->x, o->y, o->z)); // Eje de rotación para pata trasera izquierda
+    Linea* ejePataBackRight = new Linea(o, new Vertice(o->x + 0.5 - 0.15, o->y, o->z)); // Eje de rotación para pata trasera derecha
+    Linea* ejeCola = new Linea(o, new Vertice(o->x, o->y + 1.0f, o->z)); // Eje de rotación para la cola
 
-    foxleg* frontLeft = new foxleg(o, 0, -1 + profundidadPata);
-    foxleg* frontRight = new foxleg(o, 0.5 - anchoPata, -1 + profundidadPata);
-    foxleg* backLeft = new foxleg(o, 0, 0);
-    foxleg* backRight = new foxleg(o, 0.5 - anchoPata, 0);
+    // Crear las partes del zorro pasando las líneas como último parámetro
+    foxhead* head = new foxhead(o, ejeCabeza);
+    foxbody* body = new foxbody(o, ejeCuerpo);
 
-    foxtail* tail = new foxtail(o);
+    foxleg* frontLeft = new foxleg(o, 0, -1 + 0.15f, ejePataFrontLeft);
+    foxleg* frontRight = new foxleg(o, 0.5 - 0.15, -1 + 0.15f, ejePataFrontRight);
+    foxleg* backLeft = new foxleg(o, 0, 0, ejePataBackLeft);
+    foxleg* backRight = new foxleg(o, 0.5 - 0.15, 0, ejePataBackRight);
+
+    foxtail* tail = new foxtail(o, ejeCola);
+
+    // Crear el zorro
     foxxy = new fox(head, body, frontRight, frontLeft, backRight, backLeft, tail);
-    foxxy->moveLeg(FoxLeg::FrontLeft,M_PI/10);
+
+    //foxxy->moveLeg(FoxLeg::FrontLeft, M_PI / 180.0f);
+    // Realizar una rotación y mostrar
     foxxy->display();
 }
 
@@ -110,21 +122,24 @@ void OpenGLWidget::paintGL() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // Configure lighting
-    float luzAmbiente[] = {0.2, 0.2, 0.2, 1};
-    float luzDifusa[] = {1.0, 1.0, 1.0, 1};
-    float luzPosicion[] = {lightX, lightY, 2.0f, 1};;
-
-    glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
-    glLightfv(GL_LIGHT0, GL_POSITION, luzPosicion);
-
     // Apply camera transformations
     glTranslatef(-cameraX, -cameraY, -cameraZ);
     glTranslatef(0, 0, -cameraDistance);
     glRotatef(cameraPitch, 1, 0, 0);   // Pitch rotation
     glRotatef(cameraYaw, 0, 1, 0);     // Yaw rotation
 
+    // Configure lighting
+    float luzAmbiente[] = {0.5, 0.5, 0.5, 1};
+    float luzDifusa[] = {0.6, 0.6, 0.6, 1};
+    float luzPosicion[] = {lightX, lightY + 1.0f, 4.0, 1};
+
+    glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
+
+    // Set light position after transformations
+    glLightfv(GL_LIGHT0, GL_POSITION, luzPosicion); // Affected by transformations
+
+    // Render object
     glColor3f(1, 0, 0);
     foxxy->display();
 }

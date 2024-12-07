@@ -2,7 +2,7 @@
 #include <cmath>
 
 Objeto3D::Objeto3D() {
-    this->superficies = nullptr;
+    this->superficies = std::vector<Superficie*>();
     this->rotationAxe = nullptr;
 }
 
