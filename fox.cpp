@@ -85,10 +85,10 @@ void fox::moveLeg(FoxLeg leg, double angle) {
     }
 
     if (selectedLeg) {
-        // Rotate leg forward or backward around X-axis
+        double angleInRadians = angle * M_PI / 180.0;  // Convert degrees to radians
         glPushMatrix();
-        glRotatef(angle, 1.0f, 0.0f, 0.0f);
-        selectedLeg->rotar(angle, selectedLeg->rotationAxe);  // Assuming rotar method in Objeto3D
+        glRotatef(angle, 1.0f, 0.0f, 0.0f);  // glRotatef uses degrees
+        selectedLeg->rotar(angleInRadians, selectedLeg->rotationAxe);  // rotar uses radians
         glPopMatrix();
     }
 }

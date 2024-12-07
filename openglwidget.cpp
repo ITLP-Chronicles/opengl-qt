@@ -5,6 +5,9 @@
 #include <cmath>
 fox* foxxy = nullptr;
 OpenGLWidget::OpenGLWidget() {
+    setFocusPolicy(Qt::StrongFocus);  // Allow widget to receive keyboard focus
+    setFocus();                        // Set initial focus to this widget
+    
     /// Values Default
     // Initial camera parameters
     cameraDistance = 3.5f;
@@ -30,10 +33,10 @@ OpenGLWidget::OpenGLWidget() {
     // Crear las líneas para los ejes de rotación
     Linea* ejeCabeza = new Linea(o, new Vertice(o->x, o->y + 0.5f, o->z)); // Eje de rotación para la cabeza
     Linea* ejeCuerpo = new Linea(o, new Vertice(o->x, o->y + 1.0f, o->z));  // Eje de rotación para el cuerpo
-    Linea* ejePataFrontLeft = new Linea(o, new Vertice(o->x, o->y - 1 + 0.15f, o->z)); // Eje de rotación para pata delantera izquierda
-    Linea* ejePataFrontRight = new Linea(o, new Vertice(o->x + 0.5 - 0.15, o->y - 1 + 0.15f, o->z)); // Eje de rotación para pata delantera derecha
-    Linea* ejePataBackLeft = new Linea(o, new Vertice(o->x, o->y, o->z)); // Eje de rotación para pata trasera izquierda
-    Linea* ejePataBackRight = new Linea(o, new Vertice(o->x + 0.5 - 0.15, o->y, o->z)); // Eje de rotación para pata trasera derecha
+    Linea* ejePataFrontLeft = new Linea(o, new Vertice(o->x, o->y - 1 + 0.15f, o->z + 0.5f)); // Ahora se extiende en Z
+    Linea* ejePataFrontRight = new Linea(o, new Vertice(o->x + 0.5f - 0.15f, o->y - 1 + 0.15f, o->z + 0.5f));
+    Linea* ejePataBackLeft = new Linea(o, new Vertice(o->x, o->y, o->z + 0.5f));
+    Linea* ejePataBackRight = new Linea(o, new Vertice(o->x + 0.5f - 0.15f, o->y, o->z + 0.5f));
     Linea* ejeCola = new Linea(o, new Vertice(o->x, o->y + 1.0f, o->z)); // Eje de rotación para la cola
 
     // Crear las partes del zorro pasando las líneas como último parámetro
@@ -50,7 +53,7 @@ OpenGLWidget::OpenGLWidget() {
     // Crear el zorro
     foxxy = new fox(head, body, frontRight, frontLeft, backRight, backLeft, tail);
 
-    //foxxy->moveLeg(FoxLeg::FrontLeft, M_PI / 180.0f);
+    foxxy->moveLeg(FoxLeg::FrontLeft, 20);
     // Realizar una rotación y mostrar
     foxxy->display();
 }
@@ -142,4 +145,30 @@ void OpenGLWidget::paintGL() {
     // Render object
     glColor3f(1, 0, 0);
     foxxy->display();
+}
+
+void OpenGLWidget::keyPressEvent(QKeyEvent *event) {
+    qDebug() << "Key Press Event Received! Key:" << event->key();
+    qDebug() << "Widget has focus:" << this->hasFocus();
+    
+    if (event->key() == Qt::Key_A) {
+        qDebug() << "A key pressed!";
+        timer.start(30, this);
+    }
+    QWidget::keyPressEvent(event);
+}
+
+void OpenGLWidget::timerEvent(QTimerEvent *event) {
+    foxxy->moveLeg(FoxLeg::FrontLeft, 1);
+    foxxy->moveLeg(FoxLeg::FrontRight, 1);
+    foxxy->moveLeg(FoxLeg::BackLeft, 1);
+    foxxy->moveLeg(FoxLeg::BackRight, 1);
+    update();
+}
+
+void OpenGLWidget::keyReleaseEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_A) {
+        timer.stop();
+    }
+    QWidget::keyReleaseEvent(event);
 }

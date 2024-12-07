@@ -4,6 +4,8 @@
 #include <QOpenGLWidget>
 #include <QBasicTimer>
 #include <QMouseEvent>
+#include <QTimer>
+#include <QKeyEvent>
 #include "objeto3d.h"
 
 class OpenGLWidget : public QOpenGLWidget
@@ -34,6 +36,10 @@ private:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void wheelEvent(QWheelEvent *);
+protected:
+    void timerEvent(QTimerEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
 };
 
 #endif // OPENGLWIDGET_H
