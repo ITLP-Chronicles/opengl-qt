@@ -28,7 +28,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>380</x>
       <y>600</y>
       <width>101</width>
       <height>20</height>
@@ -80,20 +80,20 @@
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>530</x>
       <y>600</y>
-      <width>201</width>
+      <width>341</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>F -&gt; Rotar totalmente (Eje X)</string>
+     <string>Arriba, Abajo, Derecha, Izquierda: Rotar el zorro</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>530</x>
       <y>630</y>
       <width>141</width>
       <height>20</height>
