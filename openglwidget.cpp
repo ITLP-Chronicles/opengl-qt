@@ -85,6 +85,18 @@ OpenGLWidget::OpenGLWidget() {
 
     // Crear el zorro
     foxxy = new fox(head, body, frontRight, frontLeft, backRight, backLeft, tail);
+    
+    // Store initial state
+    initialFox = new fox(
+        new foxhead(o, ejeCabeza->copia()),
+        new foxbody(o, ejeCuerpo->copia()),
+        new foxleg(o, 0.5f - 0.15f, -1.0f + 0.15f, ejePataFrontRight->copia()),
+        new foxleg(o, 0, -1.0f + 0.15f, ejePataFrontLeft->copia()),
+        new foxleg(o, 0.5f - 0.15f, 0, ejePataBackRight->copia()),
+        new foxleg(o, 0, 0, ejePataBackLeft->copia()),
+        new foxtail(o, ejeCola->copia())
+    );
+    
     // Realizar una rotación y mostrar
     foxxy->display();
 }
@@ -201,6 +213,9 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event) {
                 break;
             case Qt::Key_PageDown:
                 keyPageDownPressed = true;
+                break;
+            case Qt::Key_F:
+                resetFox();
                 break;
         }
     }
@@ -382,4 +397,31 @@ void OpenGLWidget::rotateZTimer() {
         }
     }
     update();
+}
+
+void OpenGLWidget::resetFox() {
+    if (foxxy && initialFox) {
+        // Copy initial state to current fox
+        foxxy->head->superficies = initialFox->head->copia()->superficies;
+        foxxy->body->superficies = initialFox->body->copia()->superficies;
+        foxxy->frontRight->superficies = initialFox->frontRight->copia()->superficies;
+        foxxy->frontLeft->superficies = initialFox->frontLeft->copia()->superficies;
+        foxxy->backRight->superficies = initialFox->backRight->copia()->superficies;
+        foxxy->backLeft->superficies = initialFox->backLeft->copia()->superficies;
+        foxxy->tail->superficies = initialFox->tail->copia()->superficies;
+        
+        // Reset rotation axes
+        foxxy->head->rotationAxe = initialFox->head->rotationAxe->copia();
+        foxxy->body->rotationAxe = initialFox->body->rotationAxe->copia();
+        foxxy->frontRight->rotationAxe = initialFox->frontRight->rotationAxe->copia();
+        foxxy->frontLeft->rotationAxe = initialFox->frontLeft->rotationAxe->copia();
+        foxxy->backRight->rotationAxe = initialFox->backRight->rotationAxe->copia();
+        foxxy->backLeft->rotationAxe = initialFox->backLeft->rotationAxe->copia();
+        foxxy->tail->rotationAxe = initialFox->tail->rotationAxe->copia();
+    }
+    update();
+}
+
+OpenGLWidget::~OpenGLWidget() {
+    delete initialFox;
 }

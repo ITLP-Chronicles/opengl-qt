@@ -7,11 +7,13 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include "objeto3d.h"
+#include "fox.h"
 
 class OpenGLWidget : public QOpenGLWidget
 {
 public:
     OpenGLWidget();
+    ~OpenGLWidget();
 private:
     float cameraDistance;
     float cameraYaw;
@@ -44,6 +46,8 @@ private:
     bool keyRightPressed = false;
     bool keyPageUpPressed = false;
     bool keyPageDownPressed = false;
+    fox* initialFox = nullptr;  // Store initial state
+    void resetFox();  // New function to handle reset
     void initializeGL() override;
     void paintGL() override;
     void mouseMoveEvent(QMouseEvent *) override;
