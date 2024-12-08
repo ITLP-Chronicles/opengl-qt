@@ -46,6 +46,7 @@ protected:
 private slots:
     void moveHeadTimer();
     void moveFoxRotationTimer();
+    void moveTailTimer();
 };
 
 #endif // OPENGLWIDGET_H

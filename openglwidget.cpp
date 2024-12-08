@@ -36,9 +36,11 @@ OpenGLWidget::OpenGLWidget() {
     this->timerTail = new QTimer(this);
     this->timerHead = new QTimer(this);
     this->timerFoxRotation = new QTimer(this);
-    connect(timerTail, &QTimer::timeout, this, moveTailTimer);
+    connect(timerTail, &QTimer::timeout, this, &OpenGLWidget::moveTailTimer);
     connect(timerHead, &QTimer::timeout, this, &OpenGLWidget::moveHeadTimer);
     connect(timerFoxRotation, &QTimer::timeout, this, &OpenGLWidget::moveFoxRotationTimer);
+    connect(timerTail, &QTimer::timeout, this, &OpenGLWidget::moveTailTimer);
+
     ///
 
     Vertice* o = new Vertice(-0.25f, -0.25f, 0.5f);
@@ -252,6 +254,23 @@ void OpenGLWidget::moveFoxRotationTimer() {
     
     if (foxxy) {
         foxxy->rotateItself(X, rotationSpeed);
+    }
+    
+    update();
+}
+
+void OpenGLWidget::moveTailTimer() {
+    static float time = 0.0f;
+    
+    // Increment time for smooth animation
+    time += 0.2f;  // Controls the speed of the tail wagging
+    
+    // Use sine function for smooth back-and-forth movement
+    // Multiply by a small number (0.8f) to keep the movement subtle
+    float tailAngle = 0.8f * sin(time);
+    
+    if (foxxy) {
+        foxxy->moveTail(tailAngle);
     }
     
     update();
