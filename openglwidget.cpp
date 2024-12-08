@@ -36,10 +36,16 @@ OpenGLWidget::OpenGLWidget() {
     this->timerTail = new QTimer(this);
     this->timerHead = new QTimer(this);
     this->timerFoxRotation = new QTimer(this);
+    this->timerRotateX = new QTimer(this);
+    this->timerRotateY = new QTimer(this);
+    this->timerRotateZ = new QTimer(this);
     connect(timerTail, &QTimer::timeout, this, &OpenGLWidget::moveTailTimer);
     connect(timerHead, &QTimer::timeout, this, &OpenGLWidget::moveHeadTimer);
     connect(timerFoxRotation, &QTimer::timeout, this, &OpenGLWidget::moveFoxRotationTimer);
     connect(timerTail, &QTimer::timeout, this, &OpenGLWidget::moveTailTimer);
+    connect(timerRotateX, &QTimer::timeout, this, &OpenGLWidget::rotateXTimer);
+    connect(timerRotateY, &QTimer::timeout, this, &OpenGLWidget::rotateYTimer);
+    connect(timerRotateZ, &QTimer::timeout, this, &OpenGLWidget::rotateZTimer);
 
     ///
 
@@ -176,8 +182,41 @@ void OpenGLWidget::paintGL() {
 }
 
 void OpenGLWidget::keyPressEvent(QKeyEvent *event) {
-    qDebug() << "Widget has focus:" << this->hasFocus();
+    if (!event->isAutoRepeat()) {  // Only handle initial key press
+        switch(event->key()) {
+            case Qt::Key_Up:
+                keyUpPressed = true;
+                break;
+            case Qt::Key_Down:
+                keyDownPressed = true;
+                break;
+            case Qt::Key_Left:
+                keyLeftPressed = true;
+                break;
+            case Qt::Key_Right:
+                keyRightPressed = true;
+                break;
+            case Qt::Key_PageUp:
+                keyPageUpPressed = true;
+                break;
+            case Qt::Key_PageDown:
+                keyPageDownPressed = true;
+                break;
+        }
+    }
     
+    // Start timers based on pressed keys
+    if (keyUpPressed || keyDownPressed) {
+        timerRotateX->start(30);
+    }
+    if (keyLeftPressed || keyRightPressed) {
+        timerRotateY->start(30);
+    }
+    if (keyPageUpPressed || keyPageDownPressed) {
+        timerRotateZ->start(30);
+    }
+    
+    // Keep existing key handlers
     if (event->key() == Qt::Key_A) {
         timer.start(30, this);
     }
@@ -186,9 +225,6 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event) {
     }
     if (event->key() == Qt::Key_D) {
         timerTail->start(30);
-    }
-    if (event->key() == Qt::Key_F) {
-        timerFoxRotation->start(30);
     }
 
     QWidget::keyPressEvent(event);
@@ -217,6 +253,41 @@ void OpenGLWidget::timerEvent(QTimerEvent *event) {
 }
 
 void OpenGLWidget::keyReleaseEvent(QKeyEvent *event) {
+    if (!event->isAutoRepeat()) {  // Only handle actual key releases
+        switch(event->key()) {
+            case Qt::Key_Up:
+                keyUpPressed = false;
+                break;
+            case Qt::Key_Down:
+                keyDownPressed = false;
+                break;
+            case Qt::Key_Left:
+                keyLeftPressed = false;
+                break;
+            case Qt::Key_Right:
+                keyRightPressed = false;
+                break;
+            case Qt::Key_PageUp:
+                keyPageUpPressed = false;
+                break;
+            case Qt::Key_PageDown:
+                keyPageDownPressed = false;
+                break;
+        }
+    }
+    
+    // Stop timers if no keys in that axis are pressed
+    if (!keyUpPressed && !keyDownPressed) {
+        timerRotateX->stop();
+    }
+    if (!keyLeftPressed && !keyRightPressed) {
+        timerRotateY->stop();
+    }
+    if (!keyPageUpPressed && !keyPageDownPressed) {
+        timerRotateZ->stop();
+    }
+    
+    // Keep existing release handlers
     if (event->key() == Qt::Key_A) {
         timer.stop();
     }
@@ -229,6 +300,7 @@ void OpenGLWidget::keyReleaseEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_F) {
         timerFoxRotation->stop();
     }
+    
     QWidget::keyReleaseEvent(event);
 }
 
@@ -273,5 +345,41 @@ void OpenGLWidget::moveTailTimer() {
         foxxy->moveTail(tailAngle);
     }
     
+    update();
+}
+
+void OpenGLWidget::rotateXTimer() {
+    if (foxxy) {
+        float direction = 0.0f;
+        if (keyUpPressed) direction += 1.0f;
+        if (keyDownPressed) direction -= 1.0f;
+        if (direction != 0.0f) {
+            foxxy->rotateItself(X, direction * 2.0f);
+        }
+    }
+    update();
+}
+
+void OpenGLWidget::rotateYTimer() {
+    if (foxxy) {
+        float direction = 0.0f;
+        if (keyRightPressed) direction += 1.0f;
+        if (keyLeftPressed) direction -= 1.0f;
+        if (direction != 0.0f) {
+            foxxy->rotateItself(Y, direction * 2.0f);
+        }
+    }
+    update();
+}
+
+void OpenGLWidget::rotateZTimer() {
+    if (foxxy) {
+        float direction = 0.0f;
+        if (keyPageUpPressed) direction += 1.0f;
+        if (keyPageDownPressed) direction -= 1.0f;
+        if (direction != 0.0f) {
+            foxxy->rotateItself(Z, direction * 2.0f);
+        }
+    }
     update();
 }

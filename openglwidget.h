@@ -33,6 +33,17 @@ private:
     float focoX;
     float focoY;
     Objeto3D *objeto3D;
+    QTimer* timerRotateX;
+    QTimer* timerRotateY;
+    QTimer* timerRotateZ;
+    float rotationDirection = 1.0f;
+    // Key tracking
+    bool keyUpPressed = false;
+    bool keyDownPressed = false;
+    bool keyLeftPressed = false;
+    bool keyRightPressed = false;
+    bool keyPageUpPressed = false;
+    bool keyPageDownPressed = false;
     void initializeGL() override;
     void paintGL() override;
     void mouseMoveEvent(QMouseEvent *) override;
@@ -47,6 +58,9 @@ private slots:
     void moveHeadTimer();
     void moveFoxRotationTimer();
     void moveTailTimer();
+    void rotateXTimer();
+    void rotateYTimer();
+    void rotateZTimer();
 };
 
 #endif // OPENGLWIDGET_H
