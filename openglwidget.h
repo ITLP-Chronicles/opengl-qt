@@ -65,6 +65,11 @@ private slots:
     void rotateXTimer();
     void rotateYTimer();
     void rotateZTimer();
+    void drawMainView();
+    void drawTopView();
+    void drawSideView();
+    void drawBottomView();
+    void setupLighting();
 };
 
 #endif // OPENGLWIDGET_H

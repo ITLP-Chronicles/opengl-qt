@@ -157,40 +157,107 @@ void OpenGLWidget::wheelEvent(QWheelEvent *event) {
 
 void OpenGLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    
+    // Get the window dimensions
+    int width = this->width();
+    int height = this->height();
+    int sideViewHeight = height / 3;
+    
+    // Enable blending
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
+    // Main view (left side, full height)
+    glViewport(0, 0, width * 2/3, height);
+    drawMainView();
+    
+    // Top view (right side, top third)
+    glViewport(width * 2/3, height * 2/3, width/3, height/3);
+    drawTopView();
+    
+    // Side view (right side, middle third)
+    glViewport(width * 2/3, height/3, width/3, height/3);
+    drawSideView();
+    
+    // Bottom view (right side, bottom third)
+    glViewport(width * 2/3, 0, width/3, height/3);
+    drawBottomView();
+}
 
+void OpenGLWidget::drawMainView() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glFrustum(-1.0, 1.0, -1.0, 1.0, 2.0, 10.0);
-
+    
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
-    // Apply camera transformations
+    
+    // Apply main camera transformations
     glTranslatef(-cameraX, -cameraY, -cameraZ);
     glTranslatef(0, 0, -cameraDistance);
-    glRotatef(cameraPitch, 1, 0, 0);   // Pitch rotation
-    glRotatef(cameraYaw, 0, 1, 0);     // Yaw rotation
+    glRotatef(cameraPitch, 1, 0, 0);
+    glRotatef(cameraYaw, 0, 1, 0);
+    
+    setupLighting();
+    foxxy->display();
+}
 
-    // Configure lighting
+void OpenGLWidget::drawTopView() {
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glFrustum(-1.0, 1.0, -1.0, 1.0, 2.0, 10.0);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    
+    // Position camera above the fox
+    glTranslatef(0, 0, -cameraDistance);
+    glRotatef(90, 1, 0, 0);  // Look down
+    
+    setupLighting();
+    foxxy->display();
+}
+
+void OpenGLWidget::drawSideView() {
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glFrustum(-1.0, 1.0, -1.0, 1.0, 2.0, 10.0);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    
+    // Position camera to the right of the fox
+    glTranslatef(0, 0, -cameraDistance);
+    glRotatef(90, 0, 1, 0);  // Look from right side
+    
+    setupLighting();
+    foxxy->display();
+}
+
+void OpenGLWidget::drawBottomView() {
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glFrustum(-1.0, 1.0, -1.0, 1.0, 2.0, 10.0);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    
+    // Position camera below the fox
+    glTranslatef(0, 0, -cameraDistance);
+    glRotatef(-90, 1, 0, 0);  // Look up
+    
+    setupLighting();
+    foxxy->display();
+}
+
+void OpenGLWidget::setupLighting() {
     float luzAmbiente[] = {0.5, 0.5, 0.5, 1};
     float luzDifusa[] = {0.6, 0.6, 0.6, 1};
     float luzPosicion[] = {lightX, lightY + 1.0f, 4.0, 1};
-
+    
     glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
-
-    // Set light position after transformations
-    glLightfv(GL_LIGHT0, GL_POSITION, luzPosicion); // Affected by transformations
-
-    // Render object
-    glColor3f(1, 0, 0);
-    foxxy->display();
-    // if (foxxy) {
-    //     foxxy->rotateItself(X, rotationAngle);  // This will handle the display
-    // }
+    glLightfv(GL_LIGHT0, GL_POSITION, luzPosicion);
 }
 
 void OpenGLWidget::keyPressEvent(QKeyEvent *event) {
