@@ -6,6 +6,9 @@
 fox* foxxy = nullptr;
 
 
+float rotateX = 0;
+float rotateY = 0;
+float rotateZ = 0;
 
 void moveTailTimer(){
     qDebug() << "moveTailTimer";
@@ -55,21 +58,21 @@ OpenGLWidget::OpenGLWidget() {
     Linea* ejeCabeza = new Linea(o, new Vertice(o->x, o->y + 0.5f, o->z)); // Eje de rotación para la cabeza
     Linea* ejeCuerpo = new Linea(o, new Vertice(o->x, o->y + 1.0f, o->z));  // Eje de rotación para el cuerpo
     Linea* ejePataFrontLeft = new Linea(
-        new Vertice(o->x - 0.1f, o->y, o->z - 1.0f),          // Punto izquierdo
-        new Vertice(o->x + 0.1f, o->y, o->z - 1.0f)           // Punto derecho
-    );
+        new Vertice(o->x - 0.1f, o->y, o->z - 1.0f + 0.075f),          // Punto izquierdo
+        new Vertice(o->x + 0.1f, o->y, o->z - 1.0f + 0.075f)           // Punto derecho
+        );
     Linea* ejePataFrontRight = new Linea(
-        new Vertice(o->x + 0.5f - 0.25f, o->y, o->z - 1.0f),  // Punto izquierdo
-        new Vertice(o->x + 0.5f + 0.05f, o->y, o->z - 1.0f)   // Punto derecho
-    );
+        new Vertice(o->x + 0.5f - 0.25f, o->y, o->z - 1.0f + 0.075f),  // Punto izquierdo
+        new Vertice(o->x + 0.5f + 0.05f, o->y, o->z - 1.0f + 0.075f)   // Punto derecho
+        );
     Linea* ejePataBackLeft = new Linea(
-        new Vertice(o->x - 0.1f, o->y, o->z),                 // Punto izquierdo
-        new Vertice(o->x + 0.1f, o->y, o->z)                  // Punto derecho
-    );
+        new Vertice(o->x - 0.1f, o->y, o->z - 0.075f),                 // Punto izquierdo
+        new Vertice(o->x + 0.1f, o->y, o->z - 0.075f)                  // Punto derecho
+        );
     Linea* ejePataBackRight = new Linea(
-        new Vertice(o->x + 0.5f - 0.25f, o->y, o->z),         // Punto izquierdo
-        new Vertice(o->x + 0.5f + 0.05f, o->y, o->z)          // Punto derecho
-    );
+        new Vertice(o->x + 0.5f - 0.25f, o->y, o->z - 0.075f),         // Punto izquierdo
+        new Vertice(o->x + 0.5f + 0.05f, o->y, o->z - 0.075f)          // Punto derecho
+        );
     Linea* ejeCola = new Linea(o, new Vertice(o->x, o->y + 1.0f, o->z)); // Eje de rotación para la cola
 
     // Crear las partes del zorro pasando las líneas como último parámetro
@@ -168,30 +171,28 @@ void OpenGLWidget::paintGL() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // Apply camera transformations
+    // Aplicar las transformaciones de la cámara
     glTranslatef(-cameraX, -cameraY, -cameraZ);
     glTranslatef(0, 0, -cameraDistance);
-    glRotatef(cameraPitch, 1, 0, 0);   // Pitch rotation
-    glRotatef(cameraYaw, 0, 1, 0);     // Yaw rotation
+    glRotatef(cameraPitch, 1, 0, 0);   // Rotación de Pitch
+    glRotatef(cameraYaw, 0, 1, 0);     // Rotación de Yaw
 
-    // Configure lighting
-    float luzAmbiente[] = {0.5, 0.5, 0.5, 1};
-    float luzDifusa[] = {0.6, 0.6, 0.6, 1};
-    float luzPosicion[] = {lightX, lightY + 1.0f, 4.0, 1};
+    // Guardar el estado de la matriz para aplicar la rotación del objeto sin que se vea afectada por la cámara
+    glPushMatrix();  // Guardamos la matriz actual de transformaciones
 
-    glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
+    // Aplicar las rotaciones del objeto en sus ejes locales
+    glRotatef(rotateX, 1.0f, 0.0f, 0.0f); // Rotación sobre el eje X del objeto
+    glRotatef(rotateY, 0.0f, 1.0f, 0.0f); // Rotación sobre el eje Y del objeto
+    glRotatef(rotateZ, 0.0f, 0.0f, 1.0f); // Rotación sobre el eje Z del objeto
 
-    // Set light position after transformations
-    glLightfv(GL_LIGHT0, GL_POSITION, luzPosicion); // Affected by transformations
-
-    // Render object
+    // Renderizar el objeto con la rotación aplicada
     glColor3f(1, 0, 0);
     foxxy->display();
-    // if (foxxy) {
-    //     foxxy->rotateItself(X, rotationAngle);  // This will handle the display
-    // }
+
+    // Restaurar el estado de la matriz original
+    glPopMatrix();  // Restauramos la matriz a su estado anterior
 }
+
 
 void OpenGLWidget::keyPressEvent(QKeyEvent *event) {
     if (!event->isAutoRepeat()) {  // Only handle initial key press
@@ -314,6 +315,9 @@ void OpenGLWidget::keyReleaseEvent(QKeyEvent *event) {
     }
     if (event->key() == Qt::Key_F) {
         timerFoxRotation->stop();
+        rotateX = 0;
+        rotateY = 0;
+        rotateZ = 0;
     }
     
     QWidget::keyReleaseEvent(event);
@@ -338,11 +342,11 @@ void OpenGLWidget::moveHeadTimer() {
 void OpenGLWidget::moveFoxRotationTimer() {
     // Usar un ángulo fijo por frame en lugar de acumulativo
     float rotationSpeed = 2.0f;  // grados por frame
-    
+
     if (foxxy) {
         foxxy->rotateItself(X, rotationSpeed);
     }
-    
+
     update();
 }
 
@@ -366,10 +370,10 @@ void OpenGLWidget::moveTailTimer() {
 void OpenGLWidget::rotateXTimer() {
     if (foxxy) {
         float direction = 0.0f;
-        if (keyUpPressed) direction += 1.0f;
-        if (keyDownPressed) direction -= 1.0f;
+        if (keyUpPressed) rotateX -= 2.0f;
+        if (keyDownPressed) rotateX += 2.0f;
         if (direction != 0.0f) {
-            foxxy->rotateItself(X, direction * 2.0f);
+            //foxxy->rotateItself(X, direction * 2.0f);
         }
     }
     update();
@@ -378,10 +382,10 @@ void OpenGLWidget::rotateXTimer() {
 void OpenGLWidget::rotateYTimer() {
     if (foxxy) {
         float direction = 0.0f;
-        if (keyRightPressed) direction += 1.0f;
-        if (keyLeftPressed) direction -= 1.0f;
+        if (keyRightPressed) rotateY += 2.0f;
+        if (keyLeftPressed) rotateY -= 2.0f;
         if (direction != 0.0f) {
-            foxxy->rotateItself(Y, direction * 2.0f);
+            //foxxy->rotateItself(Y, direction * 2.0f);
         }
     }
     update();
@@ -390,10 +394,10 @@ void OpenGLWidget::rotateYTimer() {
 void OpenGLWidget::rotateZTimer() {
     if (foxxy) {
         float direction = 0.0f;
-        if (keyPageUpPressed) direction += 1.0f;
-        if (keyPageDownPressed) direction -= 1.0f;
+        if (keyPageUpPressed) rotateZ += 2.0f;
+        if (keyPageDownPressed) rotateZ -= 2.0f;
         if (direction != 0.0f) {
-            foxxy->rotateItself(Z, direction * 2.0f);
+            //foxxy->rotateItself(Z, direction * 2.0f);
         }
     }
     update();
