@@ -185,8 +185,8 @@ void OpenGLWidget::paintGL() {
     glColor3f(1, 0, 0);
 
     //foxxy->display();
-    fox* otherFoxxy = foxxy->copy();
-    otherFoxxy->display();
+    auto fuck = foxxy->copy();
+    fuck->display();
 
     QSize tam = size();
 
@@ -367,7 +367,7 @@ void OpenGLWidget::moveFoxRotationTimer() {
     float rotationSpeed = 2.0f;  // grados por frame
 
     if (foxxy) {
-        //foxxy->rotateItself(X, rotationSpeed);
+        foxxy->rotateItself(X, rotationSpeed);
     }
 
     update();
@@ -393,8 +393,12 @@ void OpenGLWidget::moveTailTimer() {
 void OpenGLWidget::rotateXTimer() {
     if (foxxy) {
         float direction = 0.0f;
-        if (keyUpPressed) rotateX -= 2.0f;
-        if (keyDownPressed) rotateX += 2.0f;
+        if (keyUpPressed) {
+            foxxy->rotateItself(X, -2.0f);
+        }
+        if (keyDownPressed){
+            foxxy->rotateItself(X,  2.0f);
+        }
         if (direction != 0.0f) {
             //foxxy->rotateItself(X, direction * 2.0f);
         }
