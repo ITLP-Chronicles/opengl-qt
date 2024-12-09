@@ -40,6 +40,8 @@ public:
     void moveTail(double angle);
 
     void rotateItself(AxeDirection direction, double angle);
+
+    fox* copy();
 };
 
 #endif // FOX_H

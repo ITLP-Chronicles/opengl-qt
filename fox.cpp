@@ -193,3 +193,15 @@ void fox::rotateItself(AxeDirection direction, double angle) {
     delete rotationMatrix;
     display();
 }
+
+fox* fox::copy(){
+    foxhead* castHead = dynamic_cast<foxhead*>(this->head->copia());
+    foxbody* castBody = dynamic_cast<foxbody*>(this->body->copia());
+    foxleg* castLeg1 = dynamic_cast<foxleg*>(this->frontRight->copia());
+    foxleg* castLeg2 = dynamic_cast<foxleg*>(this->frontLeft->copia());
+    foxleg* castLeg3 = dynamic_cast<foxleg*>(this->backRight->copia());
+    foxleg* castLeg4 = dynamic_cast<foxleg*>(this->backLeft->copia());
+    foxtail* castTail = dynamic_cast<foxtail*>(this->tail->copia());
+
+    return new fox(castHead, castBody, castLeg1, castLeg2, castLeg3, castLeg4, castTail);
+}

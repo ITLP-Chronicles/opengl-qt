@@ -189,6 +189,27 @@ void OpenGLWidget::paintGL() {
     glColor3f(1, 0, 0);
     foxxy->display();
 
+    QSize tam = size();
+
+    glViewport(10*tam.width()/9,tam.height()/3,tam.width()/3,tam.height()/3);
+
+    fox* foxxyFromUnder = foxxy->copy();
+    foxxyFromUnder->rotateItself(X, 90);
+    foxxyFromUnder->display();
+
+    glViewport(10*tam.width()/9,2*tam.height()/3,tam.width()/3,tam.height()/3);
+
+    fox* foxxyFromRight = foxxy->copy();
+    foxxyFromRight->rotateItself(Y, 90);
+
+    foxxyFromRight->display();
+
+    glViewport(10*tam.width()/9,3*tam.height()/3,tam.width()/3,tam.height()/3);
+
+    fox* foxxyFromLeft = foxxy->copy();
+    foxxyFromLeft->rotateItself(Y, -90);
+    foxxyFromLeft->display();
+
     // Restaurar el estado de la matriz original
     glPopMatrix();  // Restauramos la matriz a su estado anterior
 }
@@ -344,7 +365,7 @@ void OpenGLWidget::moveFoxRotationTimer() {
     float rotationSpeed = 2.0f;  // grados por frame
 
     if (foxxy) {
-        foxxy->rotateItself(X, rotationSpeed);
+        //foxxy->rotateItself(X, rotationSpeed);
     }
 
     update();

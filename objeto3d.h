@@ -14,7 +14,7 @@ public:
     ~Objeto3D();
     void agregar(Superficie*);
     void desplegar();
-    Objeto3D *copia();
+    virtual Objeto3D *copia();
     void rotar(float,Linea*);
     void transformar(Matriz3D*);
     Vertice* calcularCentroide() const;
