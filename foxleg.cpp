@@ -2,6 +2,9 @@
 #include "utils.h"
 
 foxleg::foxleg(Vertice* o, float offsetX, float offsetZ, Linea* rotationAxe) {
+    this->offset_x = offsetX;
+    this->offset_z = offsetZ;
+    this->thisVertex = o;
     this->rotationAxe = rotationAxe;
     // Crear la parte principal de la pata
     CrearPrismaRectangular(this,
@@ -21,7 +24,7 @@ foxleg::foxleg(Vertice* o, float offsetX, float offsetZ, Linea* rotationAxe) {
 }
 
 Objeto3D* foxleg::copia() {
-    foxleg* copy = new foxleg(nullptr, 0, 0, this->rotationAxe ? this->rotationAxe->copia() : nullptr);
+    foxleg* copy = new foxleg(this->thisVertex, this->offset_x, this->offset_z, this->rotationAxe);
     for (Superficie* superficie : superficies) {
         copy->agregar(superficie->copia());
     }

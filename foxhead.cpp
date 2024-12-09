@@ -2,6 +2,7 @@
 #include "utils.h"
 
 foxhead::foxhead(Vertice* o, Linea* eje) {
+    this->thisVertex = o;
     this->rotationAxe = eje;
     // Dimensiones de la cabeza
     float anchoCabeza = 0.6;  // Ancho de la cabeza
@@ -65,7 +66,7 @@ foxhead::foxhead(Vertice* o, Linea* eje) {
 }
 
 Objeto3D* foxhead::copia() {
-    foxhead* copy = new foxhead(nullptr, this->rotationAxe ? this->rotationAxe->copia() : nullptr);
+    foxhead* copy = new foxhead(this->thisVertex, this->rotationAxe);
     // Copy existing surfaces
     for (Superficie* superficie : superficies) {
         copy->agregar(superficie->copia());

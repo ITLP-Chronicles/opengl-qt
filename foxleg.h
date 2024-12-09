@@ -21,6 +21,9 @@ public:
     float altoPatita = 0.05;
     float profundidadPatita = 0.15;
 
+    float offset_x;
+    float offset_z;
+
     foxleg(Vertice* o, float offsetX, float offsetZ, Linea* rotationAxe);
     virtual Objeto3D* copia() override;
 };
