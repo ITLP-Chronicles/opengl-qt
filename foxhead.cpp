@@ -66,7 +66,7 @@ foxhead::foxhead(Vertice* o, Linea* eje) {
 }
 
 Objeto3D* foxhead::copia() {
-    foxhead* copy = new foxhead(this->thisVertex, this->rotationAxe);
+    foxhead* copy = new foxhead(this->thisVertex->copia(), this->rotationAxe->copia());
     // Copy existing surfaces
     for (Superficie* superficie : superficies) {
         copy->agregar(superficie->copia());

@@ -10,7 +10,7 @@ foxbody::foxbody(Vertice* o, Linea* rotationAxe){
 }
 
 Objeto3D* foxbody::copia() {
-    foxbody* copy = new foxbody(this->thisVertex, this->rotationAxe);
+    foxbody* copy = new foxbody(this->thisVertex->copia(), this->rotationAxe->copia());
     for (Superficie* superficie : superficies) {
         copy->agregar(superficie->copia());
     }

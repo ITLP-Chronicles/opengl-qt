@@ -10,7 +10,7 @@ foxtail::foxtail(Vertice* o, Linea* rotationAxe) {
 }
 
 Objeto3D* foxtail::copia() {
-    foxtail* copy = new foxtail(this->thisVertex, this->rotationAxe);
+    foxtail* copy = new foxtail(this->thisVertex->copia(), this->rotationAxe->copia());
     for (Superficie* superficie : superficies) {
         copy->agregar(superficie->copia());
     }

@@ -24,7 +24,7 @@ foxleg::foxleg(Vertice* o, float offsetX, float offsetZ, Linea* rotationAxe) {
 }
 
 Objeto3D* foxleg::copia() {
-    foxleg* copy = new foxleg(this->thisVertex, this->offset_x, this->offset_z, this->rotationAxe);
+    foxleg* copy = new foxleg(this->thisVertex->copia(), this->offset_x, this->offset_z, this->rotationAxe->copia());
     for (Superficie* superficie : superficies) {
         copy->agregar(superficie->copia());
     }
