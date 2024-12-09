@@ -63,3 +63,12 @@ foxhead::foxhead(Vertice* o, Linea* eje) {
 
     CrearPrismaRectangular(this, o->x+0.185, o->y-0.023, o->z+profundidadCabeza+0.147, 0.135f, 0.09f, 0.007f, 0, 0, 0); // Nariz
 }
+
+Objeto3D* foxhead::copia() {
+    foxhead* copy = new foxhead(nullptr, this->rotationAxe ? this->rotationAxe->copia() : nullptr);
+    // Copy existing surfaces
+    for (Superficie* superficie : superficies) {
+        copy->agregar(superficie->copia());
+    }
+    return copy;
+}

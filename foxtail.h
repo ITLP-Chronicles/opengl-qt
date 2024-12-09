@@ -6,6 +6,7 @@ class foxtail : public Objeto3D
 {
 public:
     foxtail(Vertice* o, Linea* rotationAxe);
+    virtual Objeto3D* copia() override;
 };
 
 #endif // FOXTAIL_H
