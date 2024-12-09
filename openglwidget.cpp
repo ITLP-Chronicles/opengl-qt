@@ -98,6 +98,8 @@ OpenGLWidget::OpenGLWidget() {
         new foxleg(o, 0, 0, ejePataBackLeft->copia()),
         new foxtail(o, ejeCola->copia())
     );
+
+    resetFox();
 }
 
 void OpenGLWidget::initializeGL() {
@@ -177,16 +179,14 @@ void OpenGLWidget::paintGL() {
     glPushMatrix();  // Guardamos la matriz actual de transformaciones
 
     // Aplicar las rotaciones del objeto en sus ejes locales
-    glRotatef(rotateX, 1.0f, 0.0f, 0.0f); // Rotación sobre el eje X del objeto
-    glRotatef(rotateY, 0.0f, 1.0f, 0.0f); // Rotación sobre el eje Y del objeto
-    glRotatef(rotateZ, 0.0f, 0.0f, 1.0f); // Rotación sobre el eje Z del objeto
+    //glRotatef(rotateX, 1.0f, 0.0f, 0.0f); // Rotación sobre el eje X del objeto
+    //glRotatef(rotateY, 0.0f, 1.0f, 0.0f); // Rotación sobre el eje Y del objeto
+    //glRotatef(rotateZ, 0.0f, 0.0f, 1.0f); // Rotación sobre el eje Z del objeto
 
     // Renderizar el objeto con la rotación aplicada
     glColor3f(1, 0, 0);
 
-    //foxxy->display();
-    auto fuck = foxxy->copy();
-    fuck->display();
+    foxxy->display();
 
     QSize tam = size();
 
@@ -395,9 +395,11 @@ void OpenGLWidget::rotateXTimer() {
         float direction = 0.0f;
         if (keyUpPressed) {
             foxxy->rotateItself(X, -2.0f);
+            //rotateX -= 2.0f;
         }
         if (keyDownPressed){
             foxxy->rotateItself(X,  2.0f);
+            //rotateX += 2.0f;
         }
         if (direction != 0.0f) {
             //foxxy->rotateItself(X, direction * 2.0f);
@@ -409,8 +411,8 @@ void OpenGLWidget::rotateXTimer() {
 void OpenGLWidget::rotateYTimer() {
     if (foxxy) {
         float direction = 0.0f;
-        if (keyRightPressed) rotateY += 2.0f;
-        if (keyLeftPressed) rotateY -= 2.0f;
+        if (keyRightPressed) /*rotateY += 2.0f;*/ foxxy->rotateItself(Y, 2.0f);
+        if (keyLeftPressed) /*rotateY -= 2.0f;*/ foxxy->rotateItself(Y, -2.0f);
         if (direction != 0.0f) {
             //foxxy->rotateItself(Y, direction * 2.0f);
         }
