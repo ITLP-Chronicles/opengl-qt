@@ -45,7 +45,6 @@ OpenGLWidget::OpenGLWidget() {
     connect(timerTail, &QTimer::timeout, this, &OpenGLWidget::moveTailTimer);
     connect(timerHead, &QTimer::timeout, this, &OpenGLWidget::moveHeadTimer);
     connect(timerFoxRotation, &QTimer::timeout, this, &OpenGLWidget::moveFoxRotationTimer);
-    connect(timerTail, &QTimer::timeout, this, &OpenGLWidget::moveTailTimer);
     connect(timerRotateX, &QTimer::timeout, this, &OpenGLWidget::rotateXTimer);
     connect(timerRotateY, &QTimer::timeout, this, &OpenGLWidget::rotateYTimer);
     connect(timerRotateZ, &QTimer::timeout, this, &OpenGLWidget::rotateZTimer);
@@ -99,9 +98,6 @@ OpenGLWidget::OpenGLWidget() {
         new foxleg(o, 0, 0, ejePataBackLeft->copia()),
         new foxtail(o, ejeCola->copia())
     );
-    
-    // Realizar una rotación y mostrar
-    foxxy->display();
 }
 
 void OpenGLWidget::initializeGL() {
@@ -187,7 +183,10 @@ void OpenGLWidget::paintGL() {
 
     // Renderizar el objeto con la rotación aplicada
     glColor3f(1, 0, 0);
-    foxxy->display();
+
+    //foxxy->display();
+    fox* otherFoxxy = foxxy->copy();
+    otherFoxxy->display();
 
     QSize tam = size();
 
@@ -201,7 +200,6 @@ void OpenGLWidget::paintGL() {
 
     fox* foxxyFromRight = foxxy->copy();
     foxxyFromRight->rotateItself(Y, 90);
-
     foxxyFromRight->display();
 
     glViewport(10*tam.width()/9,3*tam.height()/3,tam.width()/3,tam.height()/3);
@@ -212,6 +210,10 @@ void OpenGLWidget::paintGL() {
 
     // Restaurar el estado de la matriz original
     glPopMatrix();  // Restauramos la matriz a su estado anterior
+
+    delete foxxyFromUnder;
+    delete foxxyFromRight;
+    delete foxxyFromLeft;
 }
 
 

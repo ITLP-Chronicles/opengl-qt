@@ -191,7 +191,6 @@ void fox::rotateItself(AxeDirection direction, double angle) {
     }
     
     delete rotationMatrix;
-    display();
 }
 
 fox* fox::copy(){
