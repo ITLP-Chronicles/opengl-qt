@@ -232,10 +232,10 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_Right:
                 keyRightPressed = true;
                 break;
-            case Qt::Key_PageUp:
+            case Qt::Key_Shift:
                 keyPageUpPressed = true;
                 break;
-            case Qt::Key_PageDown:
+            case Qt::Key_Backspace:
                 keyPageDownPressed = true;
                 break;
             case Qt::Key_F:
@@ -306,10 +306,10 @@ void OpenGLWidget::keyReleaseEvent(QKeyEvent *event) {
             case Qt::Key_Right:
                 keyRightPressed = false;
                 break;
-            case Qt::Key_PageUp:
+            case Qt::Key_Shift:
                 keyPageUpPressed = false;
                 break;
-            case Qt::Key_PageDown:
+            case Qt::Key_Backspace:
                 keyPageDownPressed = false;
                 break;
         }
@@ -423,8 +423,8 @@ void OpenGLWidget::rotateYTimer() {
 void OpenGLWidget::rotateZTimer() {
     if (foxxy) {
         float direction = 0.0f;
-        if (keyPageUpPressed) rotateZ += 2.0f;
-        if (keyPageDownPressed) rotateZ -= 2.0f;
+        if (keyPageUpPressed) /*rotateZ += 2.0f;*/ foxxy->rotateItself(Z, 2.0f);
+        if (keyPageDownPressed) /*rotateZ -= 2.0f;*/ foxxy->rotateItself(Z, -2.0f);
         if (direction != 0.0f) {
             //foxxy->rotateItself(Z, direction * 2.0f);
         }
