@@ -12,17 +12,17 @@ foxhead::foxhead(Vertice* o, Linea* eje) {
     CrearPrismaRectangular(this, o->x-0.05, o->y-0.07, o->z+profundidadCabeza, anchoCabeza, altoCabeza, profundidadCabeza, 221, 129, 52); // Head
 
     // Ojos
-    CrearPrismaRectangular(this, o->x-0.05, o->y+0.07, o->z+profundidadCabeza,
-                           0.1, 0.1, -0.007,
+    CrearPrismaRectangular(this, o->x-0.05, o->y+0.07, o->z+profundidadCabeza+0.007f,
+                           0.1, 0.1, 0.01,
                            0, 0, 0);
-    CrearPrismaRectangular(this, o->x+0.45, o->y+0.07, o->z+profundidadCabeza,
-                           0.1, 0.1, -0.007,
+    CrearPrismaRectangular(this, o->x+0.45, o->y+0.07, o->z+profundidadCabeza+0.007f,
+                           0.1, 0.1, 0.01,
                            0, 0, 0);
-    CrearPrismaRectangular(this, o->x+0.05, o->y+0.07, o->z+profundidadCabeza,
-                           0.1, 0.1, -0.007,
+    CrearPrismaRectangular(this, o->x+0.05, o->y+0.07, o->z+profundidadCabeza+0.007f,
+                           0.1, 0.1, 0.01,
                            255, 255, 255);
-    CrearPrismaRectangular(this, o->x+0.35, o->y+0.07, o->z+profundidadCabeza,
-                           0.1, 0.1, -0.007,
+    CrearPrismaRectangular(this, o->x+0.35, o->y+0.07, o->z+profundidadCabeza+0.007f,
+                           0.1, 0.1, 0.01,
                            255, 255, 255);
 
     // Dimensiones de las orejas
