@@ -30,6 +30,10 @@ public:
     foxleg* backLeft;
     foxtail* tail;
 
+    Linea* ejeX;
+    Linea* ejeY;
+    Linea* ejeZ;
+
     fox(foxhead* head, foxbody* body, foxleg* frontRight, foxleg* frontLeft, foxleg* backRight, foxleg* backLeft,  foxtail* tail);
     void display();
     /// The head will be moved upwards and downwards   up | down

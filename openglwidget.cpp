@@ -10,6 +10,9 @@ float rotateX = 0;
 float rotateY = 0;
 float rotateZ = 0;
 
+float preCameraYaw = 0.0f;
+float preCameraPitch = 15.0f;
+
 void moveTailTimer(){
     qDebug() << "moveTailTimer";
 }
@@ -123,7 +126,10 @@ void OpenGLWidget::mouseReleaseEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         isLeftButtonPressed = false;
         unsetCursor();
-    }}
+    }
+    //cameraYaw = 0;
+    //cameraPitch = 15.0;
+}
 
 void OpenGLWidget::mouseMoveEvent(QMouseEvent *event) {
     QPoint delta = event->pos() - lastMousePos;
@@ -170,13 +176,23 @@ void OpenGLWidget::paintGL() {
     glLoadIdentity();
 
     // Aplicar las transformaciones de la cámara
+
+
     glTranslatef(-cameraX, -cameraY, -cameraZ);
     glTranslatef(0, 0, -cameraDistance);
+
     glRotatef(cameraPitch, 1, 0, 0);   // Rotación de Pitch
     glRotatef(cameraYaw, 0, 1, 0);     // Rotación de Yaw
 
+
+    //foxxy->rotateItself(X, cameraPitch);
+    //foxxy->rotateItself(Y, cameraYaw);
+
+    preCameraYaw = cameraYaw;
+    preCameraPitch = cameraPitch;
+
     // Guardar el estado de la matriz para aplicar la rotación del objeto sin que se vea afectada por la cámara
-    glPushMatrix();  // Guardamos la matriz actual de transformaciones
+    //glPushMatrix();  // Guardamos la matriz actual de transformaciones
 
     // Aplicar las rotaciones del objeto en sus ejes locales
     //glRotatef(rotateX, 1.0f, 0.0f, 0.0f); // Rotación sobre el eje X del objeto
@@ -367,7 +383,7 @@ void OpenGLWidget::moveFoxRotationTimer() {
     float rotationSpeed = 2.0f;  // grados por frame
 
     if (foxxy) {
-        foxxy->rotateItself(X, rotationSpeed);
+        //foxxy->rotateItself(X, rotationSpeed);
     }
 
     update();
@@ -434,6 +450,11 @@ void OpenGLWidget::rotateZTimer() {
 
 void OpenGLWidget::resetFox() {
     if (foxxy && initialFox) {
+
+        foxxy->ejeX = new Linea(0,0,0,1,0,0);
+        foxxy->ejeY = new Linea(0,0,0,0,1,0);
+        foxxy->ejeZ = new Linea(0,0,0,0,0,1);
+
         // Copy initial state to current fox
         foxxy->head->superficies = initialFox->head->copia()->superficies;
         foxxy->body->superficies = initialFox->body->copia()->superficies;

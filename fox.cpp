@@ -7,6 +7,9 @@ fox::fox(foxhead* head, foxbody* body, foxleg* frontRight, foxleg* frontLeft,
     : head(head), body(body), frontRight(frontRight), frontLeft(frontLeft),
     backRight(backRight), backLeft(backLeft), tail(tail)
 {
+    ejeX = new Linea(0,0,0,1,0,0);
+    ejeY = new Linea(0,0,0,0,1,0);
+    ejeZ = new Linea(0,0,0,0,0,1);
 }
 
 void fox::display() {
@@ -145,6 +148,124 @@ void fox::rotateItself(AxeDirection direction, double angle) {
         rotationMatrix->datos[1][2] = -sinA;
         rotationMatrix->datos[2][1] = sinA;
         rotationMatrix->datos[2][2] = cosA;
+
+        if (body) {
+            body->rotar(angleInRadians, ejeX);
+            if (body->rotationAxe) body->rotationAxe->transformar(rotationMatrix);
+        }
+        if (head) {
+            head->rotar(angleInRadians, ejeX);
+            if (head->rotationAxe) head->rotationAxe->transformar(rotationMatrix);
+        }
+        if (frontRight) {
+            frontRight->rotar(angleInRadians, ejeX);
+            if (frontRight->rotationAxe) frontRight->rotationAxe->transformar(rotationMatrix);
+        }
+        if (frontLeft) {
+            frontLeft->rotar(angleInRadians, ejeX);
+            if (frontLeft->rotationAxe) frontLeft->rotationAxe->transformar(rotationMatrix);
+        }
+        if (backRight) {
+            backRight->rotar(angleInRadians, ejeX);
+            if (backRight->rotationAxe) backRight->rotationAxe->transformar(rotationMatrix);
+        }
+        if (backLeft) {
+            backLeft->rotar(angleInRadians, ejeX);
+            if (backLeft->rotationAxe) backLeft->rotationAxe->transformar(rotationMatrix);
+        }
+        if (tail) {
+            tail->rotar(angleInRadians, ejeX);
+            if (tail->rotationAxe) tail->rotationAxe->transformar(rotationMatrix);
+        }
+
+        ejeY->transformar(rotationMatrix);
+        ejeZ->transformar(rotationMatrix);
+        break;
+    case Y:
+        rotationMatrix->datos[0][0] = cosA;
+        rotationMatrix->datos[0][2] = sinA;
+        rotationMatrix->datos[2][0] = -sinA;
+        rotationMatrix->datos[2][2] = cosA;
+
+        if (body) {
+            body->rotar(angleInRadians, ejeY);
+            if (body->rotationAxe) body->rotationAxe->transformar(rotationMatrix);
+        }
+        if (head) {
+            head->rotar(angleInRadians, ejeY);
+            if (head->rotationAxe) head->rotationAxe->transformar(rotationMatrix);
+        }
+        if (frontRight) {
+            frontRight->rotar(angleInRadians, ejeY);
+            if (frontRight->rotationAxe) frontRight->rotationAxe->transformar(rotationMatrix);
+        }
+        if (frontLeft) {
+            frontLeft->rotar(angleInRadians, ejeY);
+            if (frontLeft->rotationAxe) frontLeft->rotationAxe->transformar(rotationMatrix);
+        }
+        if (backRight) {
+            backRight->rotar(angleInRadians, ejeY);
+            if (backRight->rotationAxe) backRight->rotationAxe->transformar(rotationMatrix);
+        }
+        if (backLeft) {
+            backLeft->rotar(angleInRadians, ejeY);
+            if (backLeft->rotationAxe) backLeft->rotationAxe->transformar(rotationMatrix);
+        }
+        if (tail) {
+            tail->rotar(angleInRadians, ejeY);
+            if (tail->rotationAxe) tail->rotationAxe->transformar(rotationMatrix);
+        }
+
+        ejeX->transformar(rotationMatrix);
+        ejeZ->transformar(rotationMatrix);
+        break;
+    case Z:
+        rotationMatrix->datos[0][0] = cosA;
+        rotationMatrix->datos[0][1] = -sinA;
+        rotationMatrix->datos[1][0] = sinA;
+        rotationMatrix->datos[1][1] = cosA;
+
+        if (body) {
+            body->rotar(angleInRadians, ejeZ);
+            if (body->rotationAxe) body->rotationAxe->transformar(rotationMatrix);
+        }
+        if (head) {
+            head->rotar(angleInRadians, ejeZ);
+            if (head->rotationAxe) head->rotationAxe->transformar(rotationMatrix);
+        }
+        if (frontRight) {
+            frontRight->rotar(angleInRadians, ejeZ);
+            if (frontRight->rotationAxe) frontRight->rotationAxe->transformar(rotationMatrix);
+        }
+        if (frontLeft) {
+            frontLeft->rotar(angleInRadians, ejeZ);
+            if (frontLeft->rotationAxe) frontLeft->rotationAxe->transformar(rotationMatrix);
+        }
+        if (backRight) {
+            backRight->rotar(angleInRadians, ejeZ);
+            if (backRight->rotationAxe) backRight->rotationAxe->transformar(rotationMatrix);
+        }
+        if (backLeft) {
+            backLeft->rotar(angleInRadians, ejeZ);
+            if (backLeft->rotationAxe) backLeft->rotationAxe->transformar(rotationMatrix);
+        }
+        if (tail) {
+            tail->rotar(angleInRadians, ejeZ);
+            if (tail->rotationAxe) tail->rotationAxe->transformar(rotationMatrix);
+        }
+
+        ejeX->transformar(rotationMatrix);
+        ejeY->transformar(rotationMatrix);
+        break;
+    }
+
+    /*
+    switch(direction) {
+    case X:
+        rotationMatrix->datos[1][1] = cosA;
+        rotationMatrix->datos[1][2] = -sinA;
+        rotationMatrix->datos[2][1] = sinA;
+        rotationMatrix->datos[2][2] = cosA;
         break;
     case Y:
         rotationMatrix->datos[0][0] = cosA;
@@ -189,7 +310,7 @@ void fox::rotateItself(AxeDirection direction, double angle) {
         tail->transformar(rotationMatrix);
         if (tail->rotationAxe) tail->rotationAxe->transformar(rotationMatrix);
     }
-    
+    */
     delete rotationMatrix;
 }
 
