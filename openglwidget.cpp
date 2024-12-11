@@ -10,9 +10,6 @@ float rotateX = 0;
 float rotateY = 0;
 float rotateZ = 0;
 
-float preCameraYaw = 0.0f;
-float preCameraPitch = 15.0f;
-
 void moveTailTimer(){
     qDebug() << "moveTailTimer";
 }
@@ -25,7 +22,7 @@ OpenGLWidget::OpenGLWidget() {
     // Initial camera parameters
     cameraDistance = 3.5f;
     cameraYaw = 0.0f;
-    cameraPitch = 15.0f;
+    cameraPitch = 0.0f;
     // Camera position and movement
     cameraX = 0.0f;
     cameraY = 0.0f;
@@ -127,8 +124,6 @@ void OpenGLWidget::mouseReleaseEvent(QMouseEvent *event) {
         isLeftButtonPressed = false;
         unsetCursor();
     }
-    //cameraYaw = 0;
-    //cameraPitch = 15.0;
 }
 
 void OpenGLWidget::mouseMoveEvent(QMouseEvent *event) {
@@ -181,15 +176,12 @@ void OpenGLWidget::paintGL() {
     glTranslatef(-cameraX, -cameraY, -cameraZ);
     glTranslatef(0, 0, -cameraDistance);
 
-    glRotatef(cameraPitch, 1, 0, 0);   // Rotación de Pitch
-    glRotatef(cameraYaw, 0, 1, 0);     // Rotación de Yaw
+    //glRotatef(cameraPitch, 1, 0, 0);   // Rotación de Pitch
+    //glRotatef(cameraYaw, 0, 1, 0);     // Rotación de Yaw
 
 
-    //foxxy->rotateItself(X, cameraPitch);
-    //foxxy->rotateItself(Y, cameraYaw);
-
-    preCameraYaw = cameraYaw;
-    preCameraPitch = cameraPitch;
+    foxxy->rotateItself(X, cameraPitch);
+    foxxy->rotateItself(Y, cameraYaw);
 
     // Guardar el estado de la matriz para aplicar la rotación del objeto sin que se vea afectada por la cámara
     //glPushMatrix();  // Guardamos la matriz actual de transformaciones
@@ -223,6 +215,9 @@ void OpenGLWidget::paintGL() {
     fox* foxxyFromLeft = foxxy->copy();
     foxxyFromLeft->rotateItself(Y, -90);
     foxxyFromLeft->display();
+
+    foxxy->rotateItself(Y, -cameraYaw);
+    foxxy->rotateItself(X, -cameraPitch);
 
     // Restaurar el estado de la matriz original
     glPopMatrix();  // Restauramos la matriz a su estado anterior
